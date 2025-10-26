@@ -13,13 +13,27 @@ Backend::Backend()
         return;
     }
 
-    QSqlQuery query(db);
-    if (!query.exec(Transaction::table())) {
-        qDebug() << "Failed to create table: " << query.lastError().text();
-        return;
-    }
+    auto execQueries = [&](const QStringList &queries) {
+        QSqlQuery query(db);
+        for (const auto& q : queries){
+            if (!query.exec(q)){
+                qDebug() << "Failed to create table(s): " << query.lastError().text();
+                return false;
+            }
+        }
+        return true;
+    };
 
-    qDebug() << "DB ready to listen.";
+    if (execQueries({Transaction::table(), Backend::accountsTable(), Backend::currenciesTable(), Backend::categoriesTable()}) && initLists())
+        qDebug() << "DB ready to listen.";
+}
+
+bool Backend::initLists()
+{
+    currencies = { "EUR", "USD", "UAH" };
+    accounts = { "User1", "User2" };
+    categories = { "Food", "Entertainment" };
+    return true;
 }
 
 void Backend::newTransaction(Transaction t)

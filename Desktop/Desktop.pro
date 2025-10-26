@@ -7,7 +7,7 @@ FORMS += mainwindow.ui
 
 INCLUDEPATH += $$PWD/../Backend
 
-LIBS += $$OUT_PWD/../Backend/debug/Backend.lib
+LIBS += -L$$OUT_PWD/../Backend/debug -lBackend
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

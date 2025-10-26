@@ -21,13 +21,22 @@ void MainWindow::setupUI()
     connect(ui->homeButton, &QToolButton::clicked, this, [this]{ changePage(Page::home); });
     connect(ui->transactionsButton, &QToolButton::clicked, this, [this]{ changePage(Page::transactions); });
     connect(ui->settingsButton, &QToolButton::clicked, this, [this]{ changePage(Page::settings); });
-    connect(ui->newTransactionButton, &QToolButton::clicked, this, [this]{ changePage(Page::newTransaction);});
+    connect(ui->newTransactionButton, &QPushButton::clicked, this, [this]{ changePage(Page::newTransaction);});
     connect(ui->addTransactionButton, &QToolButton::clicked, this, &MainWindow::onAddTransaction);
+
+    ui->transactionsList->resizeColumnsToContents();
+    ui->transactionsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->transactionsList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->transactionsList->setAlternatingRowColors(true);
+    ui->transactionsList->setSortingEnabled(true);
+    ui->transactionsList->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
 
     ui->pages->setCurrentIndex(0);
     ui->transactionsList->setModel(&model);
     updateTransactions();
-    for (auto x : Res::currencies) ui->tCurrency->addItem(x);
+    for (const auto& x : backend.getCurrencies()) ui->tCurrency->addItem(x);
+    for (const auto& x : backend.getAccounts()) ui->tAccount->addItem(x);
+    for (const auto& x : backend.getCategories()) ui->tCategory->addItem(x);
     ui->tDateTime->setDateTime(QDateTime::currentDateTime());
 }
 
@@ -46,16 +55,56 @@ void MainWindow::onAddTransaction()
     t.category = ui->tCategory->currentText();
     t.account = ui->tAccount->currentText();
     t.note = ui->tNote->text();
+
+    if (!t) {
+        highlightField(ui->tName, ui->tName->text().isEmpty());
+        highlightField(ui->tAmount, ui->tAmount->value() == 0.f);
+        return;
+    }
+
     backend.newTransaction(std::move(t));
 
     updateTransactions();
     changePage(Page::transactions);
 }
 
+void MainWindow::highlightField(QWidget* widget, bool condition)
+{
+    if (!condition) return;
+
+    QTimer* timer = widget->findChild<QTimer*>("errorTimer");
+    if (!timer) {
+        timer = new QTimer(widget);
+        timer->setObjectName("errorTimer");
+        timer->setSingleShot(true);
+        connect(timer, &QTimer::timeout, [widget]() {
+            if (widget) widget->setStyleSheet("");
+        });
+    }
+
+    widget->setStyleSheet("background-color: #5a1f1f;");
+    timer->stop();
+    timer->start(2000);
+}
+
 void MainWindow::changePage(Page p)
 {
+    switch (ui->pages->currentIndex())
+    {
+    case Page::newTransaction:
+        break;
+    }
+
     ui->pages->setCurrentIndex(p);
 }
+
+
+
+
+
+
+
+
 
                         // Transaction model methods
 
@@ -70,10 +119,10 @@ QVariant TransactionModel::data(const QModelIndex& index, int role) const
         case 0: return t.name;
         case 1: return t.amount;
         case 2: return t.currency;
-        case 3: return t.dateTime.toString(Qt::ISODate);
+        case 3: return t.dateTime.toString("dd MMM yyyy hh:mm");
         case 4: return t.category;
         case 5: return t.account;
-        case 6: return t.note;
+        case 6: return (t.note.isEmpty()) ? "None" : t.note;
         }
     }
 

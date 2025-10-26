@@ -5,5 +5,5 @@
 
 namespace Res
 {
-const inline QVector<QString> currencies { "EUR", "USD", "UAH" };
+    const inline QVector<QString> currencies { "EUR", "USD", "UAH" };
 }

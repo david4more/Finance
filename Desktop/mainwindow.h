@@ -3,6 +3,7 @@
 #include "../Backend/backend.h"
 #include <QMainWindow>
 #include <QAbstractTableModel>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,4 +45,5 @@ private:
 
     // helpers
     void changePage(Page p);
+    void highlightField(QWidget* widget, bool condition);
 };

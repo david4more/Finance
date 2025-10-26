@@ -68,6 +68,11 @@
            <string>Statistics/categories/budget buttons</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Currencies and exchange rate load</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -182,97 +187,78 @@
                <height>100</height>
               </size>
              </property>
-             <widget class="QToolButton" name="newTransactionButton">
-              <property name="geometry">
-               <rect>
-                <x>450</x>
-                <y>50</y>
-                <width>61</width>
-                <height>41</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>New</string>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="toolButton">
-              <property name="geometry">
-               <rect>
-                <x>200</x>
-                <y>70</y>
-                <width>61</width>
-                <height>21</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Filters</string>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="toolButton_3">
-              <property name="geometry">
-               <rect>
-                <x>100</x>
-                <y>70</y>
-                <width>91</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Income</string>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="toolButton_2">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>70</y>
-                <width>81</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Expense</string>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="toolButton_5">
-              <property name="geometry">
-               <rect>
-                <x>100</x>
-                <y>10</y>
-                <width>23</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>&gt;</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="label_3">
-              <property name="geometry">
-               <rect>
-                <x>40</x>
-                <y>10</y>
-                <width>61</width>
-                <height>21</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Oct 2025 ...</string>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="toolButton_4">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>23</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>&lt;</string>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="1" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QToolButton" name="toolButton">
+                  <property name="text">
+                   <string>Filters</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="toolButton_3">
+                  <property name="text">
+                   <string>Income</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="toolButton_2">
+                  <property name="text">
+                   <string>Expense</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QToolButton" name="toolButton_4">
+                  <property name="text">
+                   <string>&lt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>Oct 2025 ...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="toolButton_5">
+                  <property name="text">
+                   <string>&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="2">
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>278</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="3">
+               <widget class="QPushButton" name="newTransactionButton">
+                <property name="text">
+                 <string>New</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
