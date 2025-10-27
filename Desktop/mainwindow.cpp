@@ -36,6 +36,7 @@ void MainWindow::setupUI()
     connect(ui->incomeFilterButton, &QToolButton::clicked, this, [&]{
         proxy->useFilters({.minAmount = 0.f});
     });
+    connect(ui->categoryFilterButton, &QToolButton::clicked, this, &MainWindow::onCategoryFilterButton);
 
     model = new TransactionModel(ui->centralwidget);
     proxy = new TransactionProxy(ui->centralwidget);
@@ -52,17 +53,62 @@ void MainWindow::setupUI()
 
     ui->pages->setCurrentIndex(0);
     updateTransactions();
-    for (const auto& x : backend.getCurrencies()) ui->tCurrency->addItem(x);
-    for (const auto& x : backend.getAccounts()) ui->tAccount->addItem(x);
-    for (const auto& x : backend.getCategories()) ui->tCategory->addItem(x);
+    updateData();
 
     QButtonGroup* group = new QButtonGroup(this);
     group->setExclusive(true);
     group->addButton(ui->noFilterButton);
     group->addButton(ui->expenseFilterButton);
     group->addButton(ui->incomeFilterButton);
+    group->addButton(ui->categoryFilterButton);
     group->addButton(ui->customFilterButton);
+}
 
+void MainWindow::onAddCategory()
+{
+
+}
+
+void MainWindow::onCategoryFilterButton()
+{
+    QDialog* dialog = new QDialog(this);
+    QVBoxLayout* layout = new QVBoxLayout(dialog);
+
+    for (const auto& item : backend.getCategories()) {
+        QCheckBox* box = new QCheckBox(item, dialog);
+        box->setChecked(pickedCategories.contains(item));
+        layout->addWidget(box);
+    }
+
+    QPushButton* button = new QPushButton("Done", dialog);
+    layout->addWidget(button);
+
+    // Update pickedCategories whenever a checkbox is clicked
+    auto updateCategoriesFilter = [dialog, this]{
+        pickedCategories.clear();
+        for (auto* box : dialog->findChildren<QCheckBox*>()) {
+            if (box->checkState() == Qt::Checked)
+                pickedCategories.append(box->text());
+        }
+
+        proxy->useFilters({.categories = pickedCategories});
+    };
+
+    for (auto* box : dialog->findChildren<QCheckBox*>()) {
+        connect(box, &QCheckBox::clicked, dialog, updateCategoriesFilter);
+    }
+
+    connect(button, &QPushButton::clicked, dialog, [dialog]{ dialog->accept(); });
+
+    connect(dialog, &QDialog::finished, this, [=](int){
+        if (pickedCategories.empty())
+            ui->noFilterButton->click();
+        else
+            updateCategoriesFilter();
+    });
+
+    updateCategoriesFilter();
+    dialog->show();
 }
 
 void MainWindow::onApplyCustomFilters()
@@ -78,6 +124,17 @@ void MainWindow::onMonthButton(bool next)
 void MainWindow::updateTransactions()
 {
     model->setTransactions(backend.getTransactions(QDate(2025,10,1), QDate(2025,11,30)));
+}
+
+void MainWindow::updateData()
+{
+    auto updateCombo = [&](QComboBox* box, QStringList list) {
+        box->clear();
+        for (const auto& x : list) box->addItem(x);
+    };
+    updateCombo(ui->tCurrency, backend.getCurrencies());
+    updateCombo(ui->tAccount, backend.getAccounts());
+    updateCombo(ui->tCategory, backend.getCategories());
 }
 
 void MainWindow::onAddTransaction()

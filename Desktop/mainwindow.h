@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QButtonGroup>
 #include <QStyledItemDelegate>
+#include <QDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,6 +41,7 @@ private:
     Backend backend;
     TransactionModel* model;
     TransactionProxy* proxy;
+    QStringList pickedCategories;
 
     void setupUI();
 
@@ -47,9 +49,12 @@ private:
     void onMonthButton(bool next);
     void onAddTransaction();
     void onApplyCustomFilters();
+    void onCategoryFilterButton();
+    void onAddCategory();
 
     // helpers
     void updateTransactions();
+    void updateData();
 
     void changePage(Page p);
     void highlightField(QWidget* widget, bool condition);

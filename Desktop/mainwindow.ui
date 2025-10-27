@@ -151,7 +151,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="home">
        <widget class="QLabel" name="label">
@@ -217,6 +217,16 @@
                  <widget class="QToolButton" name="incomeFilterButton">
                   <property name="text">
                    <string>Income</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="categoryFilterButton">
+                  <property name="text">
+                   <string>Category</string>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
