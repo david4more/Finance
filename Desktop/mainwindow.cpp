@@ -124,8 +124,11 @@ void MainWindow::onCategoryFilterButton()
     connect(dialog, &QDialog::finished, this, [=](int){
         if (pickedCategories.empty())
             ui->noFilterButton->click();
-        else
+        else{
             updateCategoriesFilter();
+            ui->categoryFilterButton->setChecked(true);
+        }
+
     });
 
     updateCategoriesFilter();

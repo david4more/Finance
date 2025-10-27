@@ -430,7 +430,7 @@
            <item row="5" column="1">
             <widget class="QPushButton" name="addTransactionButton">
              <property name="text">
-              <string>Placeholder, my boy</string>
+              <string>Add</string>
              </property>
             </widget>
            </item>
@@ -598,7 +598,7 @@
            <item row="5" column="1">
             <widget class="QPushButton" name="applyCustomFiltersButton">
              <property name="text">
-              <string>Apply</string>
+              <string>Placeholder, my boy</string>
              </property>
             </widget>
            </item>
