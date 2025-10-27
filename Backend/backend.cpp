@@ -30,7 +30,7 @@ Backend::Backend()
 
 bool Backend::initLists()
 {
-    currencies = { "EUR", "USD", "UAH" };
+    currencies = { "€", "$", "₴" };
     accounts = { "User1", "User2" };
     categories = { "Food", "Entertainment" };
     return true;
@@ -40,11 +40,10 @@ void Backend::newTransaction(Transaction t)
 {
     QSqlQuery query(db);
     query.prepare(
-        "INSERT INTO transactions (name, amount, currency, dateTime, category, account, note) "
-        "VALUES (:name, :amount, :currency, :dateTime, :category, :account, :note)"
+        "INSERT INTO transactions (amount, currency, dateTime, category, account, note) "
+        "VALUES (:amount, :currency, :dateTime, :category, :account, :note)"
         );
 
-    query.bindValue(":name", t.name);
     query.bindValue(":amount", t.amount);
     query.bindValue(":currency", t.currency);
     query.bindValue(":dateTime", t.dateTime);
@@ -82,7 +81,6 @@ QVector<Transaction> Backend::getTransactions(const QDate& from, const QDate& to
 
     while (query.next()) {
         Transaction t;
-        t.name      = query.value("name").toString();
         t.amount    = query.value("amount").toDouble();
         t.currency  = query.value("currency").toString();
         t.dateTime  = QDateTime::fromString(query.value("dateTime").toString(), Qt::ISODate);

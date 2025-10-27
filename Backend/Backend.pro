@@ -5,5 +5,4 @@ TARGET = Backend
 QT = sql
 
 SOURCES += backend.cpp
-HEADERS += backend.h \
-    resourses.h
+HEADERS += backend.h

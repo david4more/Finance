@@ -1,27 +1,16 @@
 #pragma once
 
 #include "../Backend/backend.h"
+#include "table.h"
 #include <QMainWindow>
-#include <QAbstractTableModel>
 #include <QTimer>
+#include <QButtonGroup>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
-
-class TransactionModel : public QAbstractTableModel
-{
-    Q_OBJECT
-    QVector<Transaction> transactions;
-public:
-    void setTransactions(QVector<Transaction>&& t);
-    int rowCount(const QModelIndex&) const override { return transactions.size(); }
-    int columnCount(const QModelIndex&) const override { return Transaction::fields; }
-    QVariant data(const QModelIndex& index, int role) const override;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-};
 
 class MainWindow : public QMainWindow
 {
@@ -31,19 +20,24 @@ public:
     ~MainWindow();
 
 private:
-    enum Page { home, transactions, settings, newTransaction };
+    enum Page { home, transactions, settings, newTransaction, customFilters };
 
     Ui::MainWindow *ui;
     Backend backend;
-    TransactionModel model;
+    TransactionModel* model;
+    TransactionProxy* proxy;
 
     void setupUI();
 
     // slots
-    void updateTransactions();
+    void onMonthButton(bool next);
     void onAddTransaction();
+    void onApplyCustomFilters();
 
     // helpers
+    void updateTransactions();
+
     void changePage(Page p);
     void highlightField(QWidget* widget, bool condition);
+    void clearTransactionForm();
 };

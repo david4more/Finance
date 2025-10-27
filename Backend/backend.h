@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QtDebug>
 #include <QDateTime>
+#include <QMap>
 
 struct Transaction;
 class Backend
@@ -14,9 +15,9 @@ public:
     Backend();
     void newTransaction(Transaction t);
     QVector<Transaction> getTransactions(const QDate& from, const QDate& to);
-    QStringList getCurrencies() { return currencies; }
-    QStringList getCategories() { return categories; }
-    QStringList getAccounts() { return accounts; }
+    const QStringList& getCurrencies() const { return currencies; }
+    const QStringList& getCategories() const { return categories; }
+    const QStringList& getAccounts() const { return accounts; }
 
 private:
     bool initLists();
@@ -37,7 +38,8 @@ private:
     static QString currenciesTable() {
         return "CREATE TABLE IF NOT EXISTS currencies ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "name TEXT UNIQUE NOT NULL)";
+            "name TEXT UNIQUE NOT NULL,"
+            "symbol TEXT UNIUE NOT NULL)";
     }
 
     static QString accountsTable() {
@@ -50,7 +52,6 @@ private:
 struct Transaction
 {
     // recurrence
-    QString name;
     float amount;
     QString currency;
     QDateTime dateTime;
@@ -59,12 +60,10 @@ struct Transaction
     QString note;
 
     int id;
-    static constexpr int fields = 7;
     static QString table() {
         return
             "CREATE TABLE IF NOT EXISTS transactions ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "name TEXT, "
             "amount REAL, "
             "currency TEXT, "
             "dateTime TEXT, "
@@ -74,7 +73,7 @@ struct Transaction
     }
 
     explicit operator bool() const {
-        return !(name.isEmpty() || amount == 0.f || currency.isEmpty() || dateTime.isNull() || category.isEmpty() || account.isEmpty());
+        return !(amount == 0.f || currency.isEmpty() || dateTime.isNull() || category.isEmpty() || account.isEmpty());
     }
 };
 

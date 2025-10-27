@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "resourses.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,33 +21,68 @@ void MainWindow::setupUI()
     connect(ui->transactionsButton, &QToolButton::clicked, this, [this]{ changePage(Page::transactions); });
     connect(ui->settingsButton, &QToolButton::clicked, this, [this]{ changePage(Page::settings); });
     connect(ui->newTransactionButton, &QPushButton::clicked, this, [this]{ changePage(Page::newTransaction);});
-    connect(ui->addTransactionButton, &QToolButton::clicked, this, &MainWindow::onAddTransaction);
+    connect(ui->customFilterButton, &QToolButton::clicked, this, [this]{ changePage(Page::customFilters);});
+    connect(ui->addTransactionButton, &QPushButton::clicked, this, &MainWindow::onAddTransaction);
+    connect(ui->applyCustomFiltersButton, &QPushButton::clicked, this, &MainWindow::onApplyCustomFilters);
 
-    ui->transactionsList->resizeColumnsToContents();
-    ui->transactionsList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->transactionsList->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->transactionsList->setAlternatingRowColors(true);
-    ui->transactionsList->setSortingEnabled(true);
-    ui->transactionsList->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
+    connect(ui->prevMonthButton, &QToolButton::clicked, this, [&]{onMonthButton(false);});
+    connect(ui->nextMonthButton, &QToolButton::clicked, this, [&]{onMonthButton(true);});
+    connect(ui->noFilterButton, &QToolButton::clicked, this, [&]{
+        proxy->useFilters({.enabled = false});
+    });
+    connect(ui->expenseFilterButton, &QToolButton::clicked, this, [&]{
+        proxy->useFilters({.maxAmount = 0.f});
+    });
+    connect(ui->incomeFilterButton, &QToolButton::clicked, this, [&]{
+        proxy->useFilters({.minAmount = 0.f});
+    });
+
+    model = new TransactionModel(ui->centralwidget);
+    proxy = new TransactionProxy(ui->centralwidget);
+    proxy->setSourceModel(model);
+    ui->transactionsTable->setModel(proxy);
+
+    ui->transactionsTable->resizeColumnsToContents();
+    ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->transactionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->transactionsTable->setAlternatingRowColors(true);
+    ui->transactionsTable->setSortingEnabled(true);
+    ui->transactionsTable->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->transactionsTable->setItemDelegate(new TransactionDelegate(ui->centralwidget));
 
     ui->pages->setCurrentIndex(0);
-    ui->transactionsList->setModel(&model);
     updateTransactions();
     for (const auto& x : backend.getCurrencies()) ui->tCurrency->addItem(x);
     for (const auto& x : backend.getAccounts()) ui->tAccount->addItem(x);
     for (const auto& x : backend.getCategories()) ui->tCategory->addItem(x);
-    ui->tDateTime->setDateTime(QDateTime::currentDateTime());
+
+    QButtonGroup* group = new QButtonGroup(this);
+    group->setExclusive(true);
+    group->addButton(ui->noFilterButton);
+    group->addButton(ui->expenseFilterButton);
+    group->addButton(ui->incomeFilterButton);
+    group->addButton(ui->customFilterButton);
+
+}
+
+void MainWindow::onApplyCustomFilters()
+{
+    ;
+}
+
+void MainWindow::onMonthButton(bool next)
+{
+    ;
 }
 
 void MainWindow::updateTransactions()
 {
-    model.setTransactions(backend.getTransactions(QDate(2025,10,1), QDate(2025,11,30)));
+    model->setTransactions(backend.getTransactions(QDate(2025,10,1), QDate(2025,11,30)));
 }
 
 void MainWindow::onAddTransaction()
 {
     Transaction t;
-    t.name = ui->tName->text();
     t.amount = ui->tAmount->value();
     t.currency = ui->tCurrency->currentText();
     t.dateTime = ui->tDateTime->dateTime();
@@ -57,7 +91,6 @@ void MainWindow::onAddTransaction()
     t.note = ui->tNote->text();
 
     if (!t) {
-        highlightField(ui->tName, ui->tName->text().isEmpty());
         highlightField(ui->tAmount, ui->tAmount->value() == 0.f);
         return;
     }
@@ -87,73 +120,21 @@ void MainWindow::highlightField(QWidget* widget, bool condition)
     timer->start(2000);
 }
 
+void MainWindow::clearTransactionForm()
+{
+    ui->tAmount->setValue(0);
+    ui->tCurrency->setCurrentIndex(0);
+    ui->tDateTime->setDateTime(QDateTime::currentDateTime());
+    ui->tCategory->setCurrentIndex(0);
+    ui->tAccount->setCurrentIndex(0);
+    ui->tNote->clear();
+}
+
 void MainWindow::changePage(Page p)
 {
-    switch (ui->pages->currentIndex())
-    {
-    case Page::newTransaction:
-        break;
-    }
-
     ui->pages->setCurrentIndex(p);
-}
 
-
-
-
-
-
-
-
-
-                        // Transaction model methods
-
-QVariant TransactionModel::data(const QModelIndex& index, int role) const
-{
-    if (!index.isValid()) return {};
-
-    const Transaction& t = transactions[index.row()];
-
-    if (role == Qt::DisplayRole) {
-        switch (index.column()) {
-        case 0: return t.name;
-        case 1: return t.amount;
-        case 2: return t.currency;
-        case 3: return t.dateTime.toString("dd MMM yyyy hh:mm");
-        case 4: return t.category;
-        case 5: return t.account;
-        case 6: return (t.note.isEmpty()) ? "None" : t.note;
-        }
-    }
-
-    return {};
-}
-
-QVariant TransactionModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (role != Qt::DisplayRole)
-        return {};
-
-    if (orientation == Qt::Horizontal) {
-        switch (section) {
-        case 0: return "Name";
-        case 1: return "Amount";
-        case 2: return "Currency";
-        case 3: return "Date";
-        case 4: return "Category";
-        case 5: return "Account";
-        case 6: return "Note";
-        }
-    }
-
-    return QAbstractTableModel::headerData(section, orientation, role);
-}
-
-void TransactionModel::setTransactions(QVector<Transaction>&& t)
-{
-    beginResetModel();
-    transactions = std::move(t);
-    endResetModel();
+    if (p == Page::newTransaction) clearTransactionForm();
 }
 
 
