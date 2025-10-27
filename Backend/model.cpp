@@ -1,4 +1,4 @@
-#include "table.h"
+#include "model.h"
 
 
 
@@ -45,17 +45,6 @@ void TransactionProxy::useFilters(Filters f)
     }
 
     invalidate();
-}
-
-
-
-// Transaction delegate methods
-
-void TransactionDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
-{
-    QStyleOptionViewItem opt(option);
-    opt.state &= ~QStyle::State_MouseOver;
-    QStyledItemDelegate::paint(painter, opt, index);
 }
 
 

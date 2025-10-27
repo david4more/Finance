@@ -1,18 +1,8 @@
 #pragma once
 
-#include <QStyledItemDelegate>
 #include <QAbstractTableModel>
 #include <QSortFilterProxyModel>
-#include <QPainter>
-#include "backend.h"
-
-class TransactionDelegate : public QStyledItemDelegate
-{
-public:
-    explicit TransactionDelegate(QObject* parent = nullptr) : QStyledItemDelegate(parent) {}
-
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-};
+#include "transaction.h"
 
 class TransactionModel : public QAbstractTableModel
 {
