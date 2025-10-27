@@ -85,7 +85,7 @@ void MainWindow::onAddTransaction()
     Transaction t;
     t.amount = ui->tAmount->value();
     t.currency = ui->tCurrency->currentText();
-    t.dateTime = ui->tDateTime->dateTime();
+    t.dateTime = QDateTime(ui->tDate->date(), ui->tTime->time());
     t.category = ui->tCategory->currentText();
     t.account = ui->tAccount->currentText();
     t.note = ui->tNote->text();
@@ -124,7 +124,8 @@ void MainWindow::clearTransactionForm()
 {
     ui->tAmount->setValue(0);
     ui->tCurrency->setCurrentIndex(0);
-    ui->tDateTime->setDateTime(QDateTime::currentDateTime());
+    ui->tDate->setDate(QDate::currentDate());
+    ui->tTime->setTime(QTime::currentTime());
     ui->tCategory->setCurrentIndex(0);
     ui->tAccount->setCurrentIndex(0);
     ui->tNote->clear();
