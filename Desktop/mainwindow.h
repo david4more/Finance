@@ -42,6 +42,7 @@ private:
     TransactionModel* model;
     TransactionProxy* proxy;
     QStringList pickedCategories;
+    QDate start, finish;
 
     void setupUI();
 

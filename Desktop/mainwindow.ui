@@ -255,7 +255,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_3">
+                 <widget class="QLabel" name="monthLabel">
                   <property name="text">
                    <string>Oct 2025 ...</string>
                   </property>
@@ -430,7 +430,7 @@
            <item row="5" column="1">
             <widget class="QPushButton" name="addTransactionButton">
              <property name="text">
-              <string>Add</string>
+              <string>Placeholder, my boy</string>
              </property>
             </widget>
            </item>

@@ -51,7 +51,9 @@ void MainWindow::setupUI()
     ui->transactionsTable->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->transactionsTable->setItemDelegate(new TransactionDelegate(ui->centralwidget));
 
-    ui->pages->setCurrentIndex(0);
+    changePage(Page::home);
+    start = QDate(QDate::currentDate().year(), QDate::currentDate().month(), 1);
+    finish = start.addMonths(1);
     updateTransactions();
     updateData();
 
@@ -64,9 +66,28 @@ void MainWindow::setupUI()
     group->addButton(ui->customFilterButton);
 }
 
+void MainWindow::onMonthButton(bool next)
+{
+    int v = next ? 1 : -1;
+    start = start.addMonths(v);
+    finish = finish.addMonths(v);
+    updateTransactions();
+}
+
 void MainWindow::onAddCategory()
 {
 
+}
+
+void MainWindow::onApplyCustomFilters()
+{
+    ;
+}
+
+void MainWindow::updateTransactions()
+{
+    ui->monthLabel->setText(start.toString("MMMM yyyy"));
+    model->setTransactions(backend.getTransactions(start, finish));
 }
 
 void MainWindow::onCategoryFilterButton()
@@ -109,21 +130,6 @@ void MainWindow::onCategoryFilterButton()
 
     updateCategoriesFilter();
     dialog->show();
-}
-
-void MainWindow::onApplyCustomFilters()
-{
-    ;
-}
-
-void MainWindow::onMonthButton(bool next)
-{
-    ;
-}
-
-void MainWindow::updateTransactions()
-{
-    model->setTransactions(backend.getTransactions(QDate(2025,10,1), QDate(2025,11,30)));
 }
 
 void MainWindow::updateData()

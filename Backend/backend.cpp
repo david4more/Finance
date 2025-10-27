@@ -30,9 +30,9 @@ Backend::Backend()
 
 bool Backend::initLists()
 {
-    currencies = { "€", "$", "₴" };
-    accounts = { "User1", "User2" };
-    categories = { "Food", "Entertainment" };
+    currencies = { "€", "$", "₴", "¥" };
+    accounts = { "User1", "User2", "Muhehehehe" };
+    categories = { "Food", "Entertainment", "Hehehoho", "Health", "Gifts" };
     return true;
 }
 
