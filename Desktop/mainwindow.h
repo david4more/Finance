@@ -2,6 +2,7 @@
 
 #include "../Backend/backend.h"
 #include "../Backend/model.h"
+#include "qcustomplot.h"
 #include <QMainWindow>
 #include <QTimer>
 #include <QButtonGroup>

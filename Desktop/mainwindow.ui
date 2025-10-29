@@ -45,7 +45,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Different budgets</string>
+           <string>Budgets for categories</string>
           </property>
          </item>
          <item>
@@ -151,20 +151,56 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="home">
        <widget class="QLabel" name="label">
         <property name="geometry">
          <rect>
-          <x>150</x>
-          <y>70</y>
+          <x>50</x>
+          <y>40</y>
           <width>161</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
          <string>Home, sweet home</string>
+        </property>
+       </widget>
+       <widget class="QCustomPlot" name="plot" native="true">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>200</y>
+          <width>461</width>
+          <height>291</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>150</y>
+          <width>271</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>THAT'S WHAT WE ARE FUCKING TALKING ABOUT</string>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton">
+        <property name="geometry">
+         <rect>
+          <x>580</x>
+          <y>690</y>
+          <width>161</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>New transaction</string>
         </property>
        </widget>
       </widget>
@@ -688,6 +724,14 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

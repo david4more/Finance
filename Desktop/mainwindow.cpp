@@ -63,6 +63,24 @@ void MainWindow::setupUI()
     group->addButton(ui->incomeFilterButton);
     group->addButton(ui->categoryFilterButton);
     group->addButton(ui->customFilterButton);
+
+    // QCustomPlot demo
+    QVector<double> x(101), y(101); // initialize with entries 0..100
+    for (int i=0; i<101; ++i)
+    {
+        x[i] = i/50.0 - 1; // x goes from -1 to 1
+        y[i] = x[i]*x[i]; // let's plot a quadratic function
+    }
+    // create graph and assign data to it:
+    ui->plot->addGraph();
+    ui->plot->graph(0)->setData(x, y);
+    // give the axes some labels:
+    ui->plot->xAxis->setLabel("x");
+    ui->plot->yAxis->setLabel("y");
+    // set axes ranges, so we see all data:
+    ui->plot->xAxis->setRange(-1, 1);
+    ui->plot->yAxis->setRange(0, 1);
+    ui->plot->replot();
 }
 
 void MainWindow::onMonthButton(bool next)
@@ -75,7 +93,7 @@ void MainWindow::onMonthButton(bool next)
 
 void MainWindow::onAddCategory()
 {
-
+    ;
 }
 
 void MainWindow::onApplyCustomFilters()
@@ -120,14 +138,9 @@ void MainWindow::onCategoryFilterButton()
 
     connect(button, &QPushButton::clicked, dialog, [dialog]{ dialog->accept(); });
 
-    connect(dialog, &QDialog::finished, this, [=](int){
-        if (pickedCategories.empty())
+    connect(dialog, &QDialog::finished, this, [=](int result){
+        if ((result == QDialog::Accepted && pickedCategories.empty()) || result == QDialog::Rejected)
             ui->noFilterButton->click();
-        else{
-            updateCategoriesFilter();
-            ui->categoryFilterButton->setChecked(true);
-        }
-
     });
 
     updateCategoriesFilter();
