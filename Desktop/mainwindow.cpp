@@ -16,7 +16,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupUI()
 {
-    this->resize(1100, 800);
     connect(ui->homeButton, &QToolButton::clicked, this, [this]{ changePage(Page::home); });
     connect(ui->transactionsButton, &QToolButton::clicked, this, [this]{ changePage(Page::transactions); });
     connect(ui->settingsButton, &QToolButton::clicked, this, [this]{ changePage(Page::settings); });
@@ -86,7 +85,7 @@ void MainWindow::onApplyCustomFilters()
 
 void MainWindow::updateTransactions()
 {
-    ui->monthLabel->setText(start.toString("MMMM yyyy"));
+    ui->monthButton->setText(start.toString("MMMM yyyy"));
     model->setTransactions(backend.getTransactions(start, finish));
 }
 
@@ -132,6 +131,7 @@ void MainWindow::onCategoryFilterButton()
     });
 
     updateCategoriesFilter();
+    dialog->setWindowModality(Qt::WindowModal);
     dialog->show();
 }
 
