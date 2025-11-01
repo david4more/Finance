@@ -2,10 +2,11 @@ TEMPLATE = lib
 CONFIG += staticlib c++17
 TARGET = Backend
 
-QT = sql
+QT += core sql network
 
 SOURCES += backend.cpp \
     model.cpp
 HEADERS += backend.h \
+    currency.h \
     model.h \
     transaction.h

@@ -37,6 +37,10 @@ void MainWindow::setupUI()
     });
     connect(ui->categoryFilterButton, &QToolButton::clicked, this, &MainWindow::onCategoryFilterButton);
 
+    backend = new Backend(this);
+    connect(backend, &Backend::message, this, [this](QString newStatus){ QMessageBox::critical(this, "Error", newStatus); });
+    backend->init();
+
     model = new TransactionModel(ui->centralwidget);
     proxy = new TransactionProxy(ui->centralwidget);
     proxy->setSourceModel(model);
@@ -64,24 +68,101 @@ void MainWindow::setupUI()
     group->addButton(ui->categoryFilterButton);
     group->addButton(ui->customFilterButton);
 
-    // QCustomPlot demo
-    QVector<double> x(101), y(101); // initialize with entries 0..100
-    for (int i=0; i<101; ++i)
-    {
-        x[i] = i/50.0 - 1; // x goes from -1 to 1
-        y[i] = x[i]*x[i]; // let's plot a quadratic function
-    }
-    // create graph and assign data to it:
-    ui->plot->addGraph();
-    ui->plot->graph(0)->setData(x, y);
-    // give the axes some labels:
-    ui->plot->xAxis->setLabel("x");
-    ui->plot->yAxis->setLabel("y");
-    // set axes ranges, so we see all data:
-    ui->plot->xAxis->setRange(-1, 1);
-    ui->plot->yAxis->setRange(0, 1);
-    ui->plot->replot();
+    setupFinancesPlot(ui->financesPlot);
+    setupCategoriesPlot(ui->categoriesPlot);
 }
+
+void MainWindow::setupFinancesPlot(QCustomPlot *plot)
+{
+    // add two new graphs and set their look:
+    plot->addGraph();
+    plot->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
+    plot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20))); // first graph will be filled with translucent blue
+    plot->addGraph();
+    plot->graph(1)->setPen(QPen(Qt::red)); // line color red for second graph
+    // generate some points of data (y0 for first, y1 for second graph):
+    QVector<double> x(251), y0(251), y1(251);
+    for (int i=0; i<251; ++i)
+    {
+        x[i] = i;
+        y0[i] = qExp(-i/150.0)*qCos(i/10.0); // exponentially decaying cosine
+        y1[i] = qExp(-i/150.0);              // exponential envelope
+    }
+    // configure right and top axis to show ticks but no labels:
+    // (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
+    plot->xAxis2->setVisible(true);
+    plot->xAxis2->setTickLabels(false);
+    plot->yAxis2->setVisible(true);
+    plot->yAxis2->setTickLabels(false);
+    // make left and bottom axes always transfer their ranges to right and top axes:
+    connect(plot->xAxis, SIGNAL(rangeChanged(QCPRange)), plot->xAxis2, SLOT(setRange(QCPRange)));
+    connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
+    // pass data points to graphs:
+    plot->graph(0)->setData(x, y0);
+    plot->graph(1)->setData(x, y1);
+    // let the ranges scale themselves so graph 0 fits perfectly in the visible area:
+    plot->graph(0)->rescaleAxes();
+    // same thing for graph 1, but only enlarge ranges (in case graph 1 is smaller than graph 0):
+    plot->graph(1)->rescaleAxes(true);
+    // Note: we could have also just called customPlot->rescaleAxes(); instead
+    // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
+    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+}
+
+void MainWindow::setupCategoriesPlot(QCustomPlot *plot)
+{
+    plot->setBackground(QBrush(QColor(30, 30, 30)));
+
+    // create empty bar chart objects:
+    QCPBars *expenseBar = new QCPBars(plot->xAxis, plot->yAxis);
+
+    expenseBar->setPen(QPen(QColor(Qt::red).darker(150), 2));
+    expenseBar->setBrush(QBrush(QColor(Qt::red)));
+
+    // prepare x axis with country labels:
+    QVector<double> ticks;
+    QVector<QString> labels;
+    auto data = backend->getCategories();
+    for (int i = 0; i < data.size(); ++i) {
+        ticks << i + 1;
+        labels << data[i];
+    }
+
+    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
+    textTicker->addTicks(ticks, labels);
+    plot->xAxis->setTicker(textTicker);
+    plot->xAxis->setTickLabelRotation(30);
+    plot->xAxis->setSubTicks(false);
+    plot->xAxis->setTickLength(0, 4);
+    plot->xAxis->setRange(0, 8);
+    plot->xAxis->setBasePen(QPen(Qt::white));
+    plot->xAxis->setTickPen(QPen(Qt::white));
+    plot->xAxis->grid()->setVisible(true);
+    plot->xAxis->grid()->setPen(QPen(QColor(130, 130, 130), 0, Qt::DotLine));
+    plot->xAxis->setTickLabelColor(Qt::white);
+    plot->xAxis->setLabelColor(Qt::white);
+
+    // prepare y axis:
+    plot->yAxis->setRange(0, 12.1);
+    plot->yAxis->setPadding(5); // a bit more space to the left border
+    plot->yAxis->setLabel("Expense per category\nin " + backend->defCurrency());
+    plot->yAxis->setBasePen(QPen(Qt::white));
+    plot->yAxis->setTickPen(QPen(Qt::white));
+    plot->yAxis->setSubTickPen(QPen(Qt::white));
+    plot->yAxis->grid()->setSubGridVisible(true);
+    plot->yAxis->setTickLabelColor(Qt::white);
+    plot->yAxis->setLabelColor(Qt::white);
+    plot->yAxis->grid()->setPen(QPen(QColor(130, 130, 130), 0, Qt::SolidLine));
+    plot->yAxis->grid()->setSubGridPen(QPen(QColor(130, 130, 130), 0, Qt::DotLine));
+
+    // Add data:
+    QVector<double> expenseData;
+    expenseData  << 0.86*10.5 << 0.83*5.5 << 0.84*5.5 << 0.52*5.8 << 0.89*5.2;
+    expenseBar->setData(ticks, expenseData);
+
+    plot->replot();
+}
+
 
 void MainWindow::onMonthButton(bool next)
 {
@@ -104,7 +185,7 @@ void MainWindow::onApplyCustomFilters()
 void MainWindow::updateTransactions()
 {
     ui->monthButton->setText(start.toString("MMMM yyyy"));
-    model->setTransactions(backend.getTransactions(start, finish));
+    model->setTransactions(backend->getTransactions(start, finish));
 }
 
 void MainWindow::onCategoryFilterButton()
@@ -112,7 +193,7 @@ void MainWindow::onCategoryFilterButton()
     QDialog* dialog = new QDialog(this);
     QVBoxLayout* layout = new QVBoxLayout(dialog);
 
-    for (const auto& item : backend.getCategories()) {
+    for (const auto& item : backend->getCategories()) {
         QCheckBox* box = new QCheckBox(item, dialog);
         box->setChecked(pickedCategories.contains(item));
         layout->addWidget(box);
@@ -154,9 +235,9 @@ void MainWindow::updateData()
         box->clear();
         for (const auto& x : list) box->addItem(x);
     };
-    updateCombo(ui->tCurrency, backend.getCurrencies());
-    updateCombo(ui->tAccount, backend.getAccounts());
-    updateCombo(ui->tCategory, backend.getCategories());
+    updateCombo(ui->tCurrency, backend->getCurrencies());
+    updateCombo(ui->tAccount, backend->getAccounts());
+    updateCombo(ui->tCategory, backend->getCategories());
 }
 
 void MainWindow::onAddTransaction()
@@ -174,7 +255,7 @@ void MainWindow::onAddTransaction()
         return;
     }
 
-    backend.newTransaction(std::move(t));
+    backend->newTransaction(std::move(t));
 
     updateTransactions();
     changePage(Page::transactions);

@@ -39,7 +39,7 @@ private:
     enum Page { home, transactions, settings, newTransaction, customFilters };
 
     Ui::MainWindow *ui;
-    Backend backend;
+    Backend* backend;
     TransactionModel* model;
     TransactionProxy* proxy;
     QStringList pickedCategories;
@@ -57,6 +57,8 @@ private:
     // helpers
     void updateTransactions();
     void updateData();
+    void setupFinancesPlot(QCustomPlot *customPlot);
+    void setupCategoriesPlot(QCustomPlot *customPlot);
 
     void changePage(Page p);
     void highlightField(QWidget* widget, bool condition);

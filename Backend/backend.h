@@ -1,5 +1,7 @@
 #pragma once
 
+#include "transaction.h"
+#include "currency.h"
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -7,39 +9,42 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QMap>
-#include "transaction.h"
+#include <QNetworkAccessManager>
 
-class Backend
+class Backend : public QObject
 {
+    Q_OBJECT
+signals:
+    void message(QString status);
+
 public:
-    Backend();
+    Backend(QObject* parent = nullptr);
+    void init();
     void newTransaction(Transaction t);
     QVector<Transaction> getTransactions(const QDate& from, const QDate& to);
-    const QStringList& getCurrencies() const { return currencies; }
+    QStringList getCurrencies() const { return currencies.codes(); }
     const QStringList& getCategories() const { return categories; }
     const QStringList& getAccounts() const { return accounts; }
+    QString defCurrency() const { return currencies.getDefaultCurrency(); }
 
 private:
     bool initLists();
+    void checkInit() { if (!initialized) emit message("Non-initialized backend usage"); };
+    bool initialized = false;
 
     QSqlDatabase db;
     const QString dbName = "finance.db";
 
+    QNetworkAccessManager network;
+
+    Currencies currencies;
     QStringList categories;
-    QStringList currencies;
     QStringList accounts;
 
     static QString categoriesTable() {
         return "CREATE TABLE IF NOT EXISTS categories ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "name TEXT UNIQUE NOT NULL)";
-    }
-
-    static QString currenciesTable() {
-        return "CREATE TABLE IF NOT EXISTS currencies ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "name TEXT UNIQUE NOT NULL,"
-            "symbol TEXT UNIUE NOT NULL)";
     }
 
     static QString accountsTable() {

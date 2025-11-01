@@ -1,4 +1,4 @@
-QT       += core gui sql widgets
+QT       += core gui sql widgets network
 CONFIG += c++17
 
 SOURCES += main.cpp mainwindow.cpp

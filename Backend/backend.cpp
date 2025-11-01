@@ -1,7 +1,17 @@
 #include "backend.h"
 
-Backend::Backend()
+Backend::Backend(QObject* parent) : QObject(parent)
 {
+    ;
+}
+
+void Backend::init()
+{
+    if (db.isOpen()) {
+        emit message("Initializing backend twice");
+        return;
+    }
+
     if (!QSqlDatabase::contains("main")) {
         db = QSqlDatabase::addDatabase("QSQLITE", "main");
         db.setDatabaseName(dbName);
@@ -9,7 +19,7 @@ Backend::Backend()
         db = QSqlDatabase::database("main");
 
     if (!db.open()) {
-        qDebug() << "Failed to open DB: " << db.lastError().text();
+        emit message("Failed to open DB: " + db.lastError().text());
         return;
     }
 
@@ -17,20 +27,39 @@ Backend::Backend()
         QSqlQuery query(db);
         for (const auto& q : queries){
             if (!query.exec(q)){
-                qDebug() << "Failed to create table(s): " << query.lastError().text();
+                emit message("Failed to create table(s): " + query.lastError().text());
                 return false;
             }
         }
         return true;
     };
 
-    if (execQueries({Transaction::table(), Backend::accountsTable(), Backend::currenciesTable(), Backend::categoriesTable()}) && initLists())
+    if (execQueries({Transaction::table(), Currencies::table(), Backend::accountsTable(), Backend::categoriesTable()}) && initLists())
         qDebug() << "DB ready to listen.";
+    else
+        emit message("Failed to setup database");
 }
 
 bool Backend::initLists()
 {
-    currencies = { "€", "$", "₴", "¥" };
+    QStringList currencyCodes = {
+        // Europe
+        "EUR", // Euro
+        "GBP", // British Pound
+        "CHF", // Swiss Franc
+        "PLN", // Polish Zloty
+        "UAH", // Ukrainian Hryvnia
+        // America
+        "USD", // US Dollar
+        "CAD", // Canadian Dollar
+        // Asia
+        "JPY", // Japanese Yen
+        "CNY", // Chinese Yuan
+    };
+    for (auto cur : currencyCodes) {
+        currencies.value(cur);
+    }
+
     accounts = { "User1", "User2", "Muhehehehe" };
     categories = { "Food", "Entertainment", "Hehehoho", "Health", "Gifts" };
     return true;

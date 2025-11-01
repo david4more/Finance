@@ -13,8 +13,8 @@ public:
     QString category;
     QString account;
     QString note;
-
     int id;
+
     static QString table() {
         return
             "CREATE TABLE IF NOT EXISTS transactions ("
