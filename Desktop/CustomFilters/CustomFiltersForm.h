@@ -2,6 +2,7 @@
 
 #include <QDialog>
 class TransactionProxy;
+class QCheckBox;
 
 namespace Ui { class CustomFiltersForm; }
 
@@ -13,12 +14,24 @@ public:
     explicit CustomFiltersForm(TransactionProxy* proxy, QWidget* parent = nullptr);
     ~CustomFiltersForm() override;
 
-    void updateData();
+    void refresh();
+    void setData(QStringList eCategories, QStringList iCategories, QStringList accounts, QStringList currencies);
+
+signals:
+    void requestData();
+    void addCategory();
+    void addAccount();
 
 private:
+    QStringList eCategories, iCategories, accounts, currencies;
+
     Ui::CustomFiltersForm* ui;
     TransactionProxy* proxy;
 
+    template <typename T>
+    void connectFilter(auto&& widget, auto&& signal, QCheckBox* checkBox, std::optional<T>& filter);
+    void updateData();
     void onButtonGroupClicked(int index);
-    void onApplyCustomFilters();
 };
+
+

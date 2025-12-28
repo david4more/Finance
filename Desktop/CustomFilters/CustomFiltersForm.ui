@@ -26,23 +26,8 @@
       <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="2">
-         <widget class="QComboBox" name="currency"/>
-        </item>
         <item row="1" column="0">
          <widget class="QDoubleSpinBox" name="limit">
           <property name="minimum">
@@ -53,7 +38,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="1" column="1">
+         <widget class="QComboBox" name="currency"/>
+        </item>
+        <item row="0" column="1">
          <widget class="QCheckBox" name="currencyBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -75,23 +63,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Limit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="comboBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>70</width>
-            <height>16777215</height>
-           </size>
+           <string>Limit (in base currency)</string>
           </property>
          </widget>
         </item>
@@ -113,7 +85,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
-         <widget class="QCheckBox" name="categoriesBox">
+         <widget class="QCheckBox" name="categoryBox">
           <property name="text">
            <string>Category</string>
           </property>
@@ -128,7 +100,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../Files/files.qrc">
+           <iconset resource="../Files/files.qrc">
             <normaloff>:/categoryIcon</normaloff>:/categoryIcon</iconset>
           </property>
           <property name="iconSize">
@@ -213,13 +185,6 @@
         <item row="1" column="0">
          <widget class="QComboBox" name="account"/>
         </item>
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="accountsBox">
-          <property name="text">
-           <string>Account</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QToolButton" name="addAccount">
           <property name="styleSheet">
@@ -229,7 +194,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../Files/files.qrc">
+           <iconset resource="../Files/files.qrc">
             <normaloff>:/budgetIcon</normaloff>:/budgetIcon</iconset>
           </property>
           <property name="iconSize">
@@ -237,6 +202,13 @@
             <width>18</width>
             <height>18</height>
            </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="accountBox">
+          <property name="text">
+           <string>Account</string>
           </property>
          </widget>
         </item>
@@ -256,51 +228,40 @@
        </spacer>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QCheckBox" name="dateBox">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="fromBox">
           <property name="text">
-           <string>Date range</string>
+           <string>From</string>
           </property>
          </widget>
         </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>from:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QDateEdit" name="from">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>1</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>to:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QDateEdit" name="to">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>1</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="toBox">
+          <property name="text">
+           <string>To</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QDateEdit" name="from">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDateEdit" name="to">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -394,15 +355,14 @@
   <tabstop>currencyBox</tabstop>
   <tabstop>limit</tabstop>
   <tabstop>currency</tabstop>
-  <tabstop>categoriesBox</tabstop>
+  <tabstop>categoryBox</tabstop>
   <tabstop>expense</tabstop>
   <tabstop>income</tabstop>
   <tabstop>category</tabstop>
   <tabstop>addCategory</tabstop>
-  <tabstop>accountsBox</tabstop>
+  <tabstop>accountBox</tabstop>
   <tabstop>account</tabstop>
   <tabstop>addAccount</tabstop>
-  <tabstop>dateBox</tabstop>
   <tabstop>from</tabstop>
   <tabstop>to</tabstop>
   <tabstop>noteBox</tabstop>
@@ -411,7 +371,7 @@
   <tabstop>apply</tabstop>
  </tabstops>
  <resources>
-  <include location="../../Files/files.qrc"/>
+  <include location="../Files/files.qrc"/>
  </resources>
  <connections/>
 </ui>

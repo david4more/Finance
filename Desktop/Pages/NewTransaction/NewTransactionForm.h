@@ -22,6 +22,8 @@ signals:
     void goBack();
     void addTransaction(Transaction t, bool isExpense);
     void requestFilters();
+    void addCategory();
+    void addAccount();
 
 private:
     QStringList eCategories, iCategories, accounts, currencies;

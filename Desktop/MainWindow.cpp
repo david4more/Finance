@@ -78,10 +78,7 @@ void MainWindow::setupTransactionsPageAndForm()
         { model->setTransactions(backend->transactions()->get(range.first, range.second)); });
 
     connect(transactionsPage, &TransactionsPage::requestFilters, this, [this](TransactionType type){
-        transactionsPage->setFilters(
-        backend->categories()->getNames(type),
-        backend->accounts()->getNames(),
-        backend->currencies()->codes());
+        transactionsPage->setFilters(eCategories + iCategories, accounts, currencies);
     });
 
 
@@ -94,19 +91,34 @@ void MainWindow::setupTransactionsPageAndForm()
     });
     connect(newTransactionForm, &NewTransactionForm::goBack, this, [this] { changePage(Page::Transactions);} );
     connect(newTransactionForm, &NewTransactionForm::requestFilters, this, [this] {
-        newTransactionForm->setFilters(
-            backend->categories()->getNames(TransactionType::Expense),
-            backend->categories()->getNames(TransactionType::Income),
-            backend->accounts()->getNames(),
-            backend->currencies()->codes());
+        newTransactionForm->setFilters(eCategories, iCategories, accounts, currencies);
     });
+
+    connect(newTransactionForm, &NewTransactionForm::addCategory, this, &MainWindow::onAddCategory);
+    connect(newTransactionForm, &NewTransactionForm::addAccount, this, &MainWindow::onAddAccount);
+}
+
+void MainWindow::onAddCategory()
+{
+
+}
+
+void MainWindow::onAddAccount()
+{
+
 }
 
 void MainWindow::refresh()
 {
+    eCategories = backend->categories()->getNames(TransactionType::Expense);
+    iCategories = backend->categories()->getNames(TransactionType::Income);
+    accounts = backend->accounts()->getNames();
+    currencies = backend->currencies()->codes();
+
     homePage->refresh();
     transactionsPage->refresh();
     newTransactionForm->refresh();
+    if (customFiltersForm) customFiltersForm->refresh();
 }
 
 void MainWindow::setupSettingsPage()
@@ -127,6 +139,12 @@ void MainWindow::changePage(Page p)
         auto* customFiltersForm = new CustomFiltersForm(proxy, this);
 
         connect(customFiltersForm, &CustomFiltersForm::finished, transactionsPage, &TransactionsPage::onCustomFiltersFinished);
+        connect(customFiltersForm, &CustomFiltersForm::requestData, this, [this, customFiltersForm] {
+            customFiltersForm->setData(eCategories, iCategories, accounts, currencies);
+        });
+        connect(customFiltersForm, &CustomFiltersForm::addCategory, this, &MainWindow::onAddCategory);
+        connect(customFiltersForm, &CustomFiltersForm::addAccount, this, &MainWindow::onAddAccount);
+        customFiltersForm->refresh();
 
         customFiltersForm->setAttribute(Qt::WA_DeleteOnClose);
         customFiltersForm->open();

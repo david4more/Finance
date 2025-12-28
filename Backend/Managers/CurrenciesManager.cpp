@@ -12,7 +12,7 @@ bool CurrenciesManager::init()
     _base = "EUR";
     QSqlQuery query(db);
     _apiKey = qgetenv("CURRENCY_API_KEY");
-    Q_ASSERT(!_apiKey.isEmpty());
+    // Q_ASSERT(!_apiKey.isEmpty());
     if (!query.exec("SELECT 1 FROM currencies LIMIT 1")) { qDebug() << query.lastError().text(); return false; }
 
     query.prepare("SELECT * FROM currencies");

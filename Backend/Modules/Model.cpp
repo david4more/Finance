@@ -3,7 +3,7 @@
 
 // Transaction proxy methods
 
-void TransactionProxy::useFilters(Filters f)
+void TransactionProxy::setFilters(Filters f)
 {
     filters = std::move(f);
     invalidate();
@@ -16,9 +16,9 @@ bool TransactionProxy::filterAcceptsRow(int sourceRow, const QModelIndex &source
     auto data = [this, &sourceRow, &sourceParent](int column) { return sourceModel()->index(sourceRow, column, sourceParent).data(Qt::UserRole); };
 
     if (filters->isExpense || filters->maxAmount) {
-        float amt = data(0).toFloat();
+        double amt = data(0).toDouble();
         if (filters->isExpense && ((amt < 0) != *filters->isExpense)) return false;
-        if (filters->maxAmount && amt > *filters->maxAmount) return false;
+        if (filters->maxAmount && std::abs(amt) > *filters->maxAmount) return false;
     }
 
     if (filters->categories && !filters->categories->contains(
@@ -36,8 +36,8 @@ bool TransactionProxy::filterAcceptsRow(int sourceRow, const QModelIndex &source
         if (filters->to && date > filters->to) return false;
     }
 
-    if (filters->note && !filters->note->contains(
-        data(4).toString())) return false;
+    if (filters->note &&
+        !data(4).toString().contains(*filters->note)) return false;
 
     return true;
 }

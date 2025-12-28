@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QDate>
+#include <QStringList>
 
 #include "Pages/Utils.h"
 
@@ -15,6 +16,7 @@ class Backend;
 class QButtonGroup;
 class TransactionModel;
 class TransactionProxy;
+class CustomFiltersForm;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,6 +25,8 @@ public:
     ~MainWindow();
 
 private:
+    QStringList eCategories, iCategories, accounts, currencies;
+
     Ui::MainWindow *ui;
     Backend* backend;
 
@@ -31,10 +35,13 @@ private:
     TransactionsPage* transactionsPage;
     SettingsPage* settingsPage;
     NewTransactionForm* newTransactionForm;
+    CustomFiltersForm* customFiltersForm = nullptr;
 
     TransactionModel* model;
     TransactionProxy* proxy;
 
+    void onAddCategory();
+    void onAddAccount();
     void refresh();
     void onFirstLaunch();
     void changePage(Page p);

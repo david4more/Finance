@@ -28,6 +28,9 @@ NewTransactionForm::NewTransactionForm(QWidget* parent) :
     group->addButton(ui->income, 2);
 
     connect(group, &QButtonGroup::idClicked, this, &NewTransactionForm::updateFilters);
+
+    connect(ui->addCategory, &QPushButton::clicked, this, [this]{ emit addCategory(); });
+    connect(ui->addAccount, &QPushButton::clicked, this, [this]{ emit addAccount(); });
 }
 
 void NewTransactionForm::refresh()

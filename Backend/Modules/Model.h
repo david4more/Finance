@@ -28,7 +28,7 @@ class BACKEND_EXPORT TransactionProxy : public QSortFilterProxyModel
 public:
     struct Filters {
         std::optional<bool> isExpense;
-        std::optional<float> maxAmount;
+        std::optional<double> maxAmount;
         std::optional<QStringList> currencies;
         std::optional<QStringList> categories;
         std::optional<QStringList> accounts;
@@ -37,9 +37,10 @@ public:
     };
     explicit TransactionProxy(QObject* parent) : QSortFilterProxyModel(parent) { setSortRole(Qt::UserRole); setFilterRole(Qt::UserRole); }
 
-    void useFilters(Filters f);
+    void setFilters(Filters f);
     void resetFilters() { filters.reset(); invalidate(); }
     Filters getFilters() const { if (filters) return *filters; else return {}; }
+    Filters& mutableFilters() { if (!filters) filters.emplace(); return *filters; }
 
 private:
     std::optional<Filters> filters;

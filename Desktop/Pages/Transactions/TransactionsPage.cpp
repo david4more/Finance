@@ -39,7 +39,8 @@ TransactionsPage::TransactionsPage(TransactionModel* model, TransactionProxy* pr
     connect(ui->nextMonth, &QToolButton::clicked, this, [&]{ onMonthButton(true); });
     connect(ui->date, &QToolButton::clicked, this, &TransactionsPage::onCustomMonth);
     connect(ui->newTransaction, &QPushButton::clicked, this, [this]{ emit newTransaction(); });
-    connect(ui->customFilter, &QPushButton::clicked, this, [this]{ emit customFilters(); });
+    connect(ui->customFilter, &QPushButton::clicked, this, [this]
+        { if (!ui->customFilter->isChecked()) ui->noFilter->click(); else emit customFilters(); });
 
     ui->transactionsTable->resizeColumnsToContents();
     ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -106,7 +107,7 @@ void TransactionsPage::updateFilters()
 void TransactionsPage::onCustomFiltersFinished(int result)
 {
     if (result != QDialog::Accepted) {
-        ui->customFilter->setChecked(false);
+        ui->noFilter->click();
         return;
     }
 
@@ -124,7 +125,7 @@ void TransactionsPage::onComboFilter(QComboBox* combo, Filter filter)
             case Filter::Account: filters.accounts.reset(); break;
             case Filter::Currency: filters.currencies.reset(); break;
         }
-        proxy->useFilters(filters);
+        proxy->setFilters(filters);
         return;
     }
 
@@ -156,28 +157,33 @@ void TransactionsPage::onComboFilter(QComboBox* combo, Filter filter)
     case Filter::Account: filters.accounts = items; break;
     case Filter::Currency: filters.currencies = items; break;
     }
-    proxy->useFilters(filters);
+    proxy->setFilters(filters);
 }
 
 void TransactionsPage::onTypeClicked(int index)
 {
     type = static_cast<TransactionType>(index);
 
+    if (ui->customFilter->isChecked()) {
+        proxy->resetFilters();
+        ui->customFilter->setChecked(false);
+    }
+
+    auto filters = proxy->getFilters();
     switch (type) {
     case TransactionType::All:
-        proxy->resetFilters(); break;
+        filters = {}; break;
     case TransactionType::Expense:
-        proxy->useFilters({ .isExpense = true }); break;
+        filters.isExpense = true; filters.categories.reset(); break;
     case TransactionType::Income:
-        proxy->useFilters({ .isExpense = false }); break;
+        filters.isExpense = false; filters.categories.reset(); break;
     }
+    proxy->setFilters(filters);
 
     if (type != TransactionType::All)
         emit requestFilters(type);
 
     ui->categoryFilter->setCurrentIndex(0);
-    ui->currencyFilter->setCurrentIndex(0);
-    ui->accountFilter->setCurrentIndex(0);
 }
 
 void TransactionsPage::onCustomMonth()
