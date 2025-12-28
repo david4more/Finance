@@ -13,6 +13,10 @@ SettingsPage::SettingsPage(QWidget* parent) :
 
     connect(ui->resetTransactions, &QPushButton::clicked, this, &SettingsPage::onResetTransactions);
     connect(ui->getCurrencies, &QPushButton::clicked, this, &SettingsPage::onGetCurrencies);
+    connect(ui->clearTransactions, &QPushButton::clicked, this, [this] {
+        if (QMessageBox::question(this, "Confirmation", "Are you sure you want to clear all transactions?") == QMessageBox::Yes)
+            emit clearTransactions();
+    });
 }
 
 void SettingsPage::onGetCurrencies()

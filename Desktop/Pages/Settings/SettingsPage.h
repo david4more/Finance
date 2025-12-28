@@ -13,6 +13,7 @@ public:
     ~SettingsPage() override;
 
 signals:
+    void clearTransactions();
     void generateTransactions();
     void requestCurrencies(QString currencies, QString base);
 

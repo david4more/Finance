@@ -62,7 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
             backend->categories()->getLimits(),
             backend->currencies()->base(),
             backend->transactions()->transactionsPerDay(from, to),
-            backend->transactions()->transactionsPerAccount(from, to));
+            backend->transactions()->transactionsPerAccount(from, to),
+            backend->transactions()->get(from, to, 10));
     });
 
     refresh();
@@ -82,9 +83,9 @@ void MainWindow::setupTransactionsPageAndForm()
         transactionsPage->setFilters(eCategories + iCategories, accounts, currencies);
     });
 
-
     connect(newTransactionForm, &NewTransactionForm::addTransaction, this, [this](Transaction t, bool isExpense){
         t.category = backend->categories()->findId(t.categoryName, isExpense);
+        t.account = backend->accounts()->findId(t.accountName);
         if (!t) return;
         backend->transactions()->add(t);
         refresh();
@@ -99,6 +100,15 @@ void MainWindow::setupTransactionsPageAndForm()
     connect(newTransactionForm, &NewTransactionForm::addAccount, this, &MainWindow::onAddAccount);
 }
 
+void MainWindow::setupSettingsPage()
+{
+    connect(settingsPage, &SettingsPage::generateTransactions, this, [this]
+        { backend->generateTransactions(); refresh(); });
+    connect(settingsPage, &SettingsPage::requestCurrencies, this, [this](QString currencies, QString base)
+        { backend->currencies()->requestLatest(std::move(currencies), std::move(base)); refresh(); });
+    connect(settingsPage, &SettingsPage::clearTransactions, this, [this]
+        { backend->transactions()->clearTransactions(); refresh(); });
+}
 void MainWindow::onAddCategory()
 {
 
@@ -122,13 +132,6 @@ void MainWindow::refresh()
     if (customFiltersForm) customFiltersForm->refresh();
 }
 
-void MainWindow::setupSettingsPage()
-{
-    connect(settingsPage, &SettingsPage::generateTransactions, this, [this]
-        { backend->generateTransactions(); refresh(); });
-    connect(settingsPage, &SettingsPage::requestCurrencies, this, [this](QString currencies, QString base)
-        { backend->currencies()->requestLatest(std::move(currencies), std::move(base)); refresh(); });
-}
 
 void MainWindow::changePage(Page p)
 {

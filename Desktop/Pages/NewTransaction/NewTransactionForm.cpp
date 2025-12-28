@@ -70,8 +70,10 @@ void NewTransactionForm::clearForm()
 
 void NewTransactionForm::onAddTransaction()
 {
-    if (ui->amount->value() == 0.f)
+    if (ui->amount->value() == 0.f) {
         Utils::highlightField(ui->amount);
+        return;
+    }
 
     Transaction t;
     t.amount = (ui->income->isChecked()) ? ui->amount->value() : -ui->amount->value();

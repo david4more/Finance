@@ -1,8 +1,9 @@
 #include "HomePage.h"
+
+#include "Transaction.h"
 #include "ui_HomePage.h"
 #include "../QCustomPlot/qcustomplot.h"
-
-#include <QDateTime>
+#include "../../Backend/Modules/Utils.h"
 
 HomePage::~HomePage() { delete ui; }
 
@@ -14,6 +15,35 @@ void HomePage::refresh()
     updateCategoriesData();
     updateFinancesIndicator();
     updateAccountsList();
+    updateRecentTransactions();
+}
+
+void HomePage::setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base,
+    QVector<DailyTransactions> d, QVector<NamedTransactions> a, QVector<Transaction> tr)
+{
+
+    transactionsData = std::move(t);
+    limitsData = std::move(l);
+    baseCurrency = std::move(base);
+    dailyData = std::move(d);
+    accountsData = std::move(a);
+    recentTransactions = std::move(tr);
+}
+
+void HomePage::updateRecentTransactions()
+{
+    ui->transactionsList->clear();
+
+    for (const auto& t : recentTransactions) {
+        auto amountItem = new QListWidgetItem(QString::number(t.amount, 'f', 2));
+        auto tagsItem = new QListWidgetItem(t.categoryName + " | " + t.accountName);
+
+        tagsItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+        ui->transactionsList->addItem(amountItem);
+        ui->transactionsList->addItem(tagsItem);
+        ui->transactionsList->addItem(new QListWidgetItem());
+    }
 }
 
 void HomePage::updateAccountsList()
@@ -65,15 +95,6 @@ void HomePage::updateFinancesIndicator()
         incomeLayout->setStretch(0, ratioFirst);
         incomeLayout->setStretch(1, ratioSecond);
     }
-}
-
-void HomePage::setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base, QVector<DailyTransactions> d, QVector<NamedTransactions> a)
-{
-    transactionsData = std::move(t);
-    limitsData = std::move(l);
-    baseCurrency = std::move(base);
-    dailyData = std::move(d);
-    accountsData = std::move(a);
 }
 
 HomePage::HomePage(QWidget* parent) :

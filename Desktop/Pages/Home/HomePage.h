@@ -2,7 +2,8 @@
 
 #include <QWidget>
 #include <QVector>
-#include <../Backend/Modules/Utils.h>
+#include "../Backend/Modules/Utils.h"
+#include "Transaction.h"
 class QCustomPlot;
 class QCPBars;
 
@@ -16,7 +17,7 @@ public:
     explicit HomePage(QWidget* parent = nullptr);
     ~HomePage() override;
     void refresh();
-    void setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base, QVector<DailyTransactions> d, QVector<NamedTransactions> a);
+    void setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base, QVector<DailyTransactions> d, QVector<NamedTransactions> a, QVector<Transaction> tr);
 
 signals:
     void requestData();
@@ -30,8 +31,10 @@ private:
     QMap<QString, double> limitsData;
     QVector<DailyTransactions> dailyData;
     QVector<NamedTransactions> accountsData;
+    QVector<Transaction> recentTransactions;
     QString baseCurrency;
 
+    void updateRecentTransactions();
     void updateAccountsList();
     void updateFinancesIndicator();
     void updateFinancesData();

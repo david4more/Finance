@@ -25,6 +25,12 @@ bool TransactionsManager::add(const Transaction& t)
     return true;
 }
 
+bool TransactionsManager::clearTransactions()
+{
+    QSqlQuery query(db);
+    return query.exec("DELETE FROM transactions");
+}
+
 QVector<DailyTransactions> TransactionsManager::transactionsPerDay(const QDate& from, const QDate& to) const
 {
     QSqlQuery query(db);
@@ -130,20 +136,25 @@ QVector<QPair<QString, double>> TransactionsManager::transactionsPerCategory(con
     return expenses;
 }
 
-QVector<Transaction> TransactionsManager::get(const QDate& from, const QDate& to) const
+QVector<Transaction> TransactionsManager::get(const QDate& from, const QDate& to, int limit) const
 {
     QSqlQuery query(db);
 
-    query.prepare(R"(
+    QString sql = R"(
                   SELECT t.amount, t.currency, t.dateTime, t.category, t.account, t.note, t.id, c.name, a.name
                   FROM transactions t
                   JOIN categories c ON t.category = c.id
-                  join accounts a on t.account = a.id
-                  ORDER BY date(t.dateTime) ASC
-    )");
+                  JOIN accounts a on t.account = a.id
+                  WHERE date(t.dateTime) BETWEEN :from AND :to
+                  ORDER BY datetime(t.dateTime) DESC
+    )";
+    if (limit > 0) sql.append("\nLIMIT :limit");
+
+    query.prepare(sql);
 
     query.bindValue(":from", from.toString(Qt::ISODate));
     query.bindValue(":to", to.toString(Qt::ISODate));
+    if (limit > 0) query.bindValue(":limit", limit);
 
     if (!query.exec()) { qDebug() << "Failed to execute TransactionsManager::get query"; return {}; }
 
