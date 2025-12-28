@@ -78,7 +78,7 @@ void NewTransactionForm::onAddTransaction()
     t.currency = ui->currency->currentText();
     t.dateTime = QDateTime(ui->dateTime->dateTime());
     t.categoryName = ui->category->currentText();
-    t.account = ui->account->currentText();
+    t.accountName = ui->account->currentText();
     t.note = ui->note->text();
 
     emit addTransaction(std::move(t), ui->expense->isChecked());

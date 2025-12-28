@@ -8,8 +8,8 @@ set(DESKTOP_SOURCES
     Pages/Home/HomePage.cpp
     Pages/Transactions/TransactionsPage.cpp
     Pages/NewTransaction/NewTransactionForm.cpp
-        CustomFilters/CustomFiltersForm.cpp
-        MultiSelect/MultiSelectDialog.cpp
+        Dialogs/CustomFilters/CustomFiltersForm.cpp
+        Dialogs/MultiSelect/MultiSelectDialog.cpp
 )
 
 set(DESKTOP_HEADERS
@@ -19,8 +19,8 @@ set(DESKTOP_HEADERS
     Pages/Home/HomePage.h
     Pages/Transactions/TransactionsPage.h
     Pages/NewTransaction/NewTransactionForm.h
-        CustomFilters/CustomFiltersForm.h
-    MultiSelect/MultiSelectDialog.h
+        Dialogs/CustomFilters/CustomFiltersForm.h
+        Dialogs/MultiSelect/MultiSelectDialog.h
         Pages/Transactions/MyComboBox.h
 )
 
@@ -30,8 +30,8 @@ set(DESKTOP_FORMS
     Pages/Home/HomePage.ui
     Pages/Transactions/TransactionsPage.ui
     Pages/NewTransaction/NewTransactionForm.ui
-        CustomFilters/CustomFiltersForm.ui
-        MultiSelect/MultiSelectDialog.ui
+        Dialogs/CustomFilters/CustomFiltersForm.ui
+        Dialogs/MultiSelect/MultiSelectDialog.ui
 )
 
 # Enable AUTOMOC and AUTOUIC

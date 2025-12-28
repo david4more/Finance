@@ -9,6 +9,7 @@ SettingsPage::SettingsPage(QWidget* parent) :
     QWidget(parent), ui(new Ui::SettingsPage)
 {
     ui->setupUi(this);
+    this->resize(1000, 800);
 
     connect(ui->resetTransactions, &QPushButton::clicked, this, &SettingsPage::onResetTransactions);
     connect(ui->getCurrencies, &QPushButton::clicked, this, &SettingsPage::onGetCurrencies);

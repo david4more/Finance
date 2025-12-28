@@ -16,7 +16,7 @@ public:
     explicit HomePage(QWidget* parent = nullptr);
     ~HomePage() override;
     void refresh();
-    void setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QVector<DailyTransactions> d, QString base);
+    void setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base, QVector<DailyTransactions> d, QVector<NamedTransactions> a);
 
 signals:
     void requestData();
@@ -29,8 +29,10 @@ private:
     QVector<QPair<QString, double>> transactionsData;
     QMap<QString, double> limitsData;
     QVector<DailyTransactions> dailyData;
+    QVector<NamedTransactions> accountsData;
     QString baseCurrency;
 
+    void updateAccountsList();
     void updateFinancesIndicator();
     void updateFinancesData();
     void updateCategoriesData();

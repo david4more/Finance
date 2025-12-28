@@ -59,6 +59,42 @@ QVector<DailyTransactions> TransactionsManager::transactionsPerDay(const QDate& 
     return dailyData;
 }
 
+QVector<NamedTransactions> TransactionsManager::transactionsPerAccount(const QDate& from, const QDate& to) const
+{
+    QSqlQuery query(db);
+
+    query.prepare(R"(
+                  SELECT
+                      a.name,
+                      SUM(CASE WHEN t.amount > 0 THEN t.amount ELSE 0 END) AS positive_total,
+                      SUM(CASE WHEN t.amount < 0 THEN t.amount ELSE 0 END) AS negative_total
+                  FROM transactions t
+                  JOIN accounts a ON a.id = t.account
+                  WHERE t.dateTime BETWEEN :from AND :to
+                  GROUP BY a.id, a.name
+                  order by positive_total - negative_total DESC
+    )");
+
+    query.bindValue(":from", from.toString(Qt::ISODate));
+    query.bindValue(":to", to.toString(Qt::ISODate));
+
+    if (!query.exec()) {
+        qDebug() << "Failed to execute TransactionsManager::transactionsPerAccount query";
+        return {};
+    }
+
+    QVector<NamedTransactions> accountsData;
+    while (query.next()) {
+        NamedTransactions d;
+        d.name = query.value(0).toString();
+        d.income = query.value(1).toDouble();
+        d.expense = query.value(2).toDouble();
+        accountsData.push_back(d);
+    }
+
+    return accountsData;
+}
+
 QVector<QPair<QString, double>> TransactionsManager::transactionsPerCategory(const QDate& from, const QDate& to, TransactionType type) const
 {
     QSqlQuery query(db);
@@ -99,10 +135,10 @@ QVector<Transaction> TransactionsManager::get(const QDate& from, const QDate& to
     QSqlQuery query(db);
 
     query.prepare(R"(
-                  SELECT t.amount, t.currency, t.dateTime, t.category, t.account, t.note, t.id, c.name
+                  SELECT t.amount, t.currency, t.dateTime, t.category, t.account, t.note, t.id, c.name, a.name
                   FROM transactions t
                   JOIN categories c ON t.category = c.id
-                  WHERE date(t.dateTime) BETWEEN :from AND :to
+                  join accounts a on t.account = a.id
                   ORDER BY date(t.dateTime) ASC
     )");
 
@@ -118,10 +154,11 @@ QVector<Transaction> TransactionsManager::get(const QDate& from, const QDate& to
         t.currency  = query.value(1).toString();
         t.dateTime  = QDateTime::fromString(query.value(2).toString(), Qt::ISODate);
         t.category  = query.value(3).toInt();
-        t.account   = query.value(4).toString();
+        t.account  = query.value(4).toInt();
         t.note      = query.value(5).toString();
         t.id        = query.value(6).toInt();
         t.categoryName = query.value(7).toString();
+        t.accountName   = query.value(8).toString();
 
         transactions.push_back(std::move(t));
     }

@@ -33,9 +33,24 @@
       <item row="1" column="1">
        <widget class="QWidget" name="widget_2" native="true">
         <property name="styleSheet">
-         <string notr="true">background-color: blue</string>
+         <string notr="true"/>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
@@ -44,55 +59,50 @@
           </widget>
          </item>
          <item>
-          <widget class="QListWidget" name="listWidget">
+          <widget class="QListWidget" name="accountsList">
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Plain</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>false</bool>
+           </property>
+           <property name="isWrapping" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="spacing">
+            <number>-4</number>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>false</bool>
+           </property>
+           <property name="batchSize">
+            <number>100</number>
+           </property>
+           <property name="supportedDragActions">
+            <set>Qt::DropAction::IgnoreAction</set>
+           </property>
            <item>
             <property name="text">
-             <string>Salary:</string>
+             <string>Account muhehehe</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>..............$985.01</string>
+             <string>-234234</string>
+            </property>
+            <property name="textAlignment">
+             <set>AlignTrailing|AlignVCenter</set>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>............-$130.12</string>
+             <string>234234</string>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Family budget:</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>...................$130</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>..............$-13.90</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Some placeholder:</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>......................$0</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>.............-$90.50</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>NOT YET IMPLEMENTED</string>
+            <property name="textAlignment">
+             <set>AlignTrailing|AlignVCenter</set>
             </property>
            </item>
           </widget>
@@ -103,7 +113,7 @@
       <item row="1" column="0">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <property name="spacing">
-         <number>0</number>
+         <number>6</number>
         </property>
         <property name="topMargin">
          <number>6</number>

@@ -31,6 +31,22 @@ bool AccountsManager::init()
     return true;
 }
 
+int AccountsManager::findId(QString name) const
+{
+    QSqlQuery query(db);
+
+    query.prepare("SELECT id FROM accounts WHERE name = :name");
+    query.bindValue(":name", name);
+
+    if (!query.exec()) { qDebug() << "Failed to execute AccountsManager::init query"; return -1; }
+
+    if (query.next())
+        return query.value(0).toInt();
+
+
+    return -1;
+}
+
 bool AccountsManager::add(QString name)
 {
     QSqlQuery query(db);

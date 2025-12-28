@@ -13,6 +13,25 @@ void HomePage::refresh()
     updateFinancesData();
     updateCategoriesData();
     updateFinancesIndicator();
+    updateAccountsList();
+}
+
+void HomePage::updateAccountsList()
+{
+    ui->accountsList->clear();
+
+    for (const auto& a : accountsData) {
+        auto nameItem = new QListWidgetItem(a.name);
+        auto expenseItem = new QListWidgetItem(QString::number(a.expense, 'f', 2) + " ");
+        auto incomeItem = new QListWidgetItem(QString::number(a.income, 'f', 2) + " ");
+
+        expenseItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        incomeItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+        ui->accountsList->addItem(nameItem);
+        ui->accountsList->addItem(expenseItem);
+        ui->accountsList->addItem(incomeItem);
+    }
 }
 
 void HomePage::updateFinancesIndicator()
@@ -48,12 +67,13 @@ void HomePage::updateFinancesIndicator()
     }
 }
 
-void HomePage::setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QVector<DailyTransactions> d, QString base)
+void HomePage::setData(QVector<QPair<QString, double>> t, QMap<QString, double> l, QString base, QVector<DailyTransactions> d, QVector<NamedTransactions> a)
 {
     transactionsData = std::move(t);
     limitsData = std::move(l);
-    dailyData = std::move(d);
     baseCurrency = std::move(base);
+    dailyData = std::move(d);
+    accountsData = std::move(a);
 }
 
 HomePage::HomePage(QWidget* parent) :

@@ -110,7 +110,10 @@ bool Backend::generateTransactions()
         if (!_transactions->add(std::move(Transaction(
             amount, currency, dateTime,
             _categories->findId(category, isExpense),
-            category, account)))) return false;
+            category,
+            _accounts->findId(account),
+            account))))
+            return false;
     }
 
     if (!db.commit()) { qDebug() << "Failed to commit transaction"; return false; }

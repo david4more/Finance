@@ -11,7 +11,7 @@
 #include "Pages/Transactions/TransactionsPage.h"
 #include "Pages/Settings/SettingsPage.h"
 #include "Pages/NewTransaction/NewTransactionForm.h"
-#include "CustomFilters/CustomFiltersForm.h"
+#include "Dialogs/CustomFilters/CustomFiltersForm.h"
 
 #include <QButtonGroup>
 #include <QMessageBox>
@@ -60,8 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
         homePage->setData(
             backend->transactions()->transactionsPerCategory(from, to, TransactionType::Expense),
             backend->categories()->getLimits(),
+            backend->currencies()->base(),
             backend->transactions()->transactionsPerDay(from, to),
-            backend->currencies()->base());
+            backend->transactions()->transactionsPerAccount(from, to));
     });
 
     refresh();

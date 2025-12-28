@@ -59,7 +59,7 @@ QVariant TransactionModel::data(const QModelIndex& index, int role) const
             .arg(t.amount);
         case 1: return t.dateTime.toString("MMM dd, hh:mm");
         case 2: return t.categoryName;
-        case 3: return t.account;
+        case 3: return t.accountName;
         case 4: return t.note.isEmpty() ? "None" : t.note;
         }
     }
@@ -68,7 +68,7 @@ QVariant TransactionModel::data(const QModelIndex& index, int role) const
         case 0: return t.amount / currencies[t.currency];
         case 1: return t.dateTime;
         case 2: return t.categoryName;
-        case 3: return t.account;
+        case 3: return t.accountName;
         case 4: return t.note;
         case 5: return t.currency;
         }

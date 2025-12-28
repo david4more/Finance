@@ -1,7 +1,7 @@
 #include "TransactionsPage.h"
 #include "ui_TransactionsPage.h"
 
-#include "../MultiSelect/MultiSelectDialog.h"
+#include "../Dialogs/MultiSelect/MultiSelectDialog.h"
 #include "../../../Backend/Modules/Model.h"
 #include "../../../Backend/Modules/Utils.h"
 
@@ -39,8 +39,10 @@ TransactionsPage::TransactionsPage(TransactionModel* model, TransactionProxy* pr
     connect(ui->nextMonth, &QToolButton::clicked, this, [&]{ onMonthButton(true); });
     connect(ui->date, &QToolButton::clicked, this, &TransactionsPage::onCustomMonth);
     connect(ui->newTransaction, &QPushButton::clicked, this, [this]{ emit newTransaction(); });
-    connect(ui->customFilter, &QPushButton::clicked, this, [this]
-        { if (!ui->customFilter->isChecked()) ui->noFilter->click(); else emit customFilters(); });
+    connect(ui->customFilter, &QPushButton::clicked, this, [this]{
+        ui->categoryFilter->setCurrentIndex(0); ui->accountFilter->setCurrentIndex(0); ui->currencyFilter->setCurrentIndex(0);
+        ui->noFilter->click(); emit customFilters();
+    });
 
     ui->transactionsTable->resizeColumnsToContents();
     ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -106,14 +108,8 @@ void TransactionsPage::updateFilters()
 
 void TransactionsPage::onCustomFiltersFinished(int result)
 {
-    if (result != QDialog::Accepted) {
+    if (result != QDialog::Accepted)
         ui->noFilter->click();
-        return;
-    }
-
-    ui->categoryFilter->setCurrentIndex(0);
-    ui->accountFilter->setCurrentIndex(0);
-    ui->currencyFilter->setCurrentIndex(0);
 }
 
 void TransactionsPage::onComboFilter(QComboBox* combo, Filter filter)
