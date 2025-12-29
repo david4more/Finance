@@ -1,6 +1,16 @@
 # CoinWarden – a Finance Tracking app
 
+Screenshots
+Home page
+<img width="1282" height="832" alt="Image" src="https://github.com/user-attachments/assets/952bcc15-11d7-4112-b14d-ed834d9dc88d" />
 
+Configuring custom filters with window-modal dialog
+<img width="1281" height="832" alt="Image" src="https://github.com/user-attachments/assets/7e72e537-9fe1-4131-9c64-92a4662c1d91" />
+
+Settings page
+<img width="1282" height="832" alt="Image" src="https://github.com/user-attachments/assets/acde4986-9ac4-4954-aafb-53f04ca54b51" />
+
+More screenshots: [Issues → Screenshots](https://github.com/david4more/CoinWarden/issues/1)
 
 Planned features:
 
