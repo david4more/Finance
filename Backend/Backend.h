@@ -27,6 +27,7 @@ public:
 
     bool setupDefault();
     bool generateTransactions();
+    bool executeQuery(const QString& query);
 
 private:
     bool createTables();

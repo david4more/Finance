@@ -18,7 +18,7 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout" rowstretch="0,1,1" columnstretch="4,1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="mainLabel">
         <property name="styleSheet">
          <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
         </property>
@@ -127,7 +127,7 @@
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Expences per category in EUR</string>
+           <string>Expences per category</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>

@@ -2,39 +2,41 @@ cmake_minimum_required(VERSION 3.22)
 project(Desktop LANGUAGES CXX)
 
 set(DESKTOP_SOURCES
-    main.cpp
-        mainwindow.cpp
-    Pages/Settings/SettingsPage.cpp
-    Pages/Home/HomePage.cpp
-    Pages/Transactions/TransactionsPage.cpp
-    Pages/NewTransaction/NewTransactionForm.cpp
+        main.cpp
+        MainWindow.cpp
+        Pages/Settings/SettingsPage.cpp
+        Pages/Home/HomePage.cpp
+        Pages/Transactions/TransactionsPage.cpp
+        Pages/NewTransaction/NewTransactionForm.cpp
         Dialogs/CustomFilters/CustomFiltersForm.cpp
         Dialogs/MultiSelect/MultiSelectDialog.cpp
+        Dialogs/NewCategory/NewCategoryDialog.cpp
 )
 
 set(DESKTOP_HEADERS
-        mainwindow.h
-    Pages/Utils.h
-    Pages/Settings/SettingsPage.h
-    Pages/Home/HomePage.h
-    Pages/Transactions/TransactionsPage.h
-    Pages/NewTransaction/NewTransactionForm.h
+        MainWindow.h
+        Pages/Utils.h
+        Pages/Settings/SettingsPage.h
+        Pages/Home/HomePage.h
+        Pages/Transactions/TransactionsPage.h
+        Pages/NewTransaction/NewTransactionForm.h
         Dialogs/CustomFilters/CustomFiltersForm.h
         Dialogs/MultiSelect/MultiSelectDialog.h
         Pages/Transactions/MyComboBox.h
+        Dialogs/NewCategory/NewCategoryDialog.h
 )
 
 set(DESKTOP_FORMS
         MainWindow.ui
-    Pages/Settings/SettingsPage.ui
-    Pages/Home/HomePage.ui
-    Pages/Transactions/TransactionsPage.ui
-    Pages/NewTransaction/NewTransactionForm.ui
+        Pages/Settings/SettingsPage.ui
+        Pages/Home/HomePage.ui
+        Pages/Transactions/TransactionsPage.ui
+        Pages/NewTransaction/NewTransactionForm.ui
         Dialogs/CustomFilters/CustomFiltersForm.ui
         Dialogs/MultiSelect/MultiSelectDialog.ui
+        Dialogs/NewCategory/NewCategoryDialog.ui
 )
 
-# Enable AUTOMOC and AUTOUIC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
@@ -53,20 +55,19 @@ add_executable(Desktop
 )
 
 target_link_libraries(Desktop PRIVATE
-    Qt6::Core
-    Qt6::Gui
-    Qt6::Widgets
-    Qt6::Sql
-    Qt6::Network
-    Backend
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Sql
+        Qt6::Network
+        Backend
 )
 
-# QCustomPlot
 target_include_directories(Desktop PRIVATE
-    ${CMAKE_SOURCE_DIR}/Backend
-    ${CMAKE_SOURCE_DIR}/Backend/Modules
-    ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot
+        ${CMAKE_SOURCE_DIR}/Backend
+        ${CMAKE_SOURCE_DIR}/Backend/Modules
+        ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot
 )
 target_link_libraries(Desktop PRIVATE
-    ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot/qcustomplotd2.lib
+        ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot/qcustomplotd2.lib
 )

@@ -31,7 +31,7 @@
         <height>1982</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QLabel" name="label_13">
          <property name="layoutDirection">
@@ -93,7 +93,7 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item alignment="Qt::AlignmentFlag::AlignBottom">
            <widget class="QPushButton" name="resetTransactions">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -160,7 +160,7 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item alignment="Qt::AlignmentFlag::AlignBottom">
            <widget class="QPushButton" name="clearTransactions">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -219,7 +219,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="query">
               <property name="placeholderText">
                <string>Enter SQL query</string>
               </property>
@@ -227,8 +227,8 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="QPushButton" name="clearTransactions_2">
+          <item alignment="Qt::AlignmentFlag::AlignBottom">
+           <widget class="QPushButton" name="executeQuery">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>1</horstretch>
@@ -242,7 +242,7 @@
              <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
             </property>
             <property name="text">
-             <string>Placeholder</string>
+             <string>Execute</string>
             </property>
            </widget>
           </item>
@@ -323,7 +323,7 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item alignment="Qt::AlignmentFlag::AlignBottom">
            <widget class="QPushButton" name="getCurrencies">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -343,6 +343,38 @@
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item alignment="Qt::AlignmentFlag::AlignHCenter">
+        <widget class="QLabel" name="label_18">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
+         </property>
+         <property name="text">
+          <string>PLACEHOLDERS</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -395,7 +427,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>Placeholder</string>
+             <string>Base</string>
             </property>
            </widget>
           </item>
@@ -405,7 +437,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>Placeholder</string>
+             <string>Currencies</string>
             </property>
            </widget>
           </item>
@@ -469,37 +501,23 @@
           <string/>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Expense categories</string>
-            </property>
-           </widget>
+          <item row="1" column="1">
+           <widget class="QListWidget" name="listWidget_2"/>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_8">
+            <property name="styleSheet">
+             <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
+            </property>
             <property name="text">
              <string>Income categories</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Accounts</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QListWidget" name="listWidget"/>
           </item>
-          <item row="1" column="1">
-           <widget class="QListWidget" name="listWidget_2"/>
-          </item>
           <item row="1" column="2">
-           <widget class="QListWidget" name="listWidget_3"/>
-          </item>
-          <item row="1" column="3">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <spacer name="verticalSpacer_2">
@@ -514,27 +532,8 @@
               </property>
              </spacer>
             </item>
-            <item alignment="Qt::AlignmentFlag::AlignVCenter">
-             <widget class="QPushButton" name="getCurrencies_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LayoutDirection::LeftToRight</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
-              </property>
-              <property name="text">
-               <string>Placeholder</string>
-              </property>
-             </widget>
-            </item>
             <item>
-             <widget class="QPushButton" name="getCurrencies_2">
+             <widget class="QPushButton" name="addCategory">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>1</horstretch>
@@ -548,11 +547,91 @@
                <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
               </property>
               <property name="text">
-               <string>Placeholder</string>
+               <string>Add</string>
               </property>
              </widget>
             </item>
            </layout>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Expense categories</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="styleSheet">
+             <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Accounts</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addAccount">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LayoutDirection::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 14pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QListWidget" name="listWidget_4"/>
           </item>
          </layout>
         </widget>

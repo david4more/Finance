@@ -17,6 +17,7 @@ SettingsPage::SettingsPage(QWidget* parent) :
         if (QMessageBox::question(this, "Confirmation", "Are you sure you want to clear all transactions?") == QMessageBox::Yes)
             emit clearTransactions();
     });
+    connect(ui->executeQuery, &QPushButton::clicked, this, [this]{ emit executeQuery(ui->query->text()); });
 }
 
 void SettingsPage::onGetCurrencies()

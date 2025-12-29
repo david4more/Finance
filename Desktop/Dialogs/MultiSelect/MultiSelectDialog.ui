@@ -67,6 +67,9 @@ border-radius: 6px</string>
           <property name="text">
            <string>Done</string>
           </property>
+          <property name="default">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>

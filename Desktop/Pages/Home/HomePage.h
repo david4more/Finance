@@ -8,7 +8,6 @@ class QCustomPlot;
 class QCPBars;
 
 namespace Ui { class HomePage; }
-
 class HomePage : public QWidget
 {
     Q_OBJECT

@@ -120,6 +120,12 @@ bool Backend::generateTransactions()
     return true;
 }
 
+bool Backend::executeQuery(const QString& query)
+{
+    QSqlQuery q(db);
+    return q.exec(query);
+}
+
 Backend::~Backend()
 {
     delete _transactions;

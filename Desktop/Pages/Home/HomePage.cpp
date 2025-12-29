@@ -38,7 +38,7 @@ void HomePage::updateRecentTransactions()
         auto amountItem = new QListWidgetItem(QString::number(t.amount, 'f', 2));
         auto tagsItem = new QListWidgetItem(t.categoryName + " | " + t.accountName);
 
-        tagsItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        amountItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
         ui->transactionsList->addItem(amountItem);
         ui->transactionsList->addItem(tagsItem);
@@ -162,7 +162,7 @@ void HomePage::updateCategoriesData()
     plot->xAxis->setRange(0, transactionsData.size() + 1);
 
     plot->yAxis->setRange(values[0] * -0.05f, values[0] * 1.05f);
-    ui->categoriesPlotLabel->setText("Expense per category in " + baseCurrency);
+    ui->mainLabel->setText("Welcome back! Here’s your activity over the last month (in " + baseCurrency + "):");
 
     plot->replot();
 }

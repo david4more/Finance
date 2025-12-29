@@ -108,7 +108,13 @@ void MainWindow::setupSettingsPage()
         { backend->currencies()->requestLatest(std::move(currencies), std::move(base)); refresh(); });
     connect(settingsPage, &SettingsPage::clearTransactions, this, [this]
         { backend->transactions()->clearTransactions(); refresh(); });
+    connect(settingsPage, &SettingsPage::executeQuery, this, [this](QString query) {
+        QMessageBox::information(this, "Result",
+            backend->executeQuery(query) ? "Query executed successfully" : "Query failed");
+        refresh();
+    });
 }
+
 void MainWindow::onAddCategory()
 {
 

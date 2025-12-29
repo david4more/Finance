@@ -4,20 +4,15 @@
 
 Planned features:
 
-- Finish accounts implementation
-
-- Finish custom filters implementation
-
+- Categories/accounts/transactions editing
 - Display colors for categories, icons for accounts
 
 Possible improvements:
 
 - Remote database integration, accounts management
-
 - Mobile version
 
-To launch the project not in Qt Creator, add this to your configuration's
-
+To launch the project not in Qt Creator, add this to your configuration's\
 Environment variables:
 
 PATH=(path to Qt)\ Qt \ 6.10.1 \ *Your CPP compiler* \\ _64 \ bin;
