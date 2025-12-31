@@ -9,7 +9,7 @@ bool AccountsManager::setupDefault()
 
     if (!db.transaction()) { qDebug() << "Failed to initialize a transaction"; return false; }
 
-    for (auto n : { "Salary", "Savings", "Family budget", "Alex's help", "Debt" })
+    for (auto n : { "Cash", "Card", "Crypto", "Family's savings", "Loan" })
         if (!add(n)) { db.rollback(); return false; }
 
     if (!db.commit()) { qDebug() << "Failed to commit transaction"; return false; }

@@ -40,8 +40,8 @@ void HomePage::updateRecentTransactions()
 
         amountItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-        ui->transactionsList->addItem(amountItem);
         ui->transactionsList->addItem(tagsItem);
+        ui->transactionsList->addItem(amountItem);
         ui->transactionsList->addItem(new QListWidgetItem());
     }
 }
@@ -258,4 +258,3 @@ QVector<double> HomePage::smoothGraph(const QVector<double>& data, const QVector
 
     return smoothed;
 }
-

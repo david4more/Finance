@@ -133,28 +133,3 @@ Backend::~Backend()
     delete _accounts;
     delete _categories;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

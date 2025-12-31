@@ -176,18 +176,3 @@ QVector<Transaction> TransactionsManager::get(const QDate& from, const QDate& to
 
     return transactions;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

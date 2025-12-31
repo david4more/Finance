@@ -242,9 +242,3 @@ QPair<QDate, QDate> TransactionsPage::getDateRange() const
     int daysInMonth = QDate(year, month, 1).daysInMonth();
     return {QDate(year, month, 1), QDate(year, month, daysInMonth)};
 }
-
-
-
-
-
-

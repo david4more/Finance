@@ -167,67 +167,6 @@ void MainWindow::changePage(Page p)
 
 void MainWindow::onFirstLaunch()
 {
-    /*
-    QDialog* dialog = new QDialog(this);
-    QVBoxLayout* layout = new QVBoxLayout(dialog);
-    QLabel* label = new QLabel("Welcome! Add a few categories to begin:", dialog);
-    QVector<QLineEdit*> lines;
-    lines.push_back(new QLineEdit(dialog));
-    QPushButton* add = new QPushButton("Add", dialog);
-    QPushButton* def = new QPushButton("Use default", dialog);
-    QPushButton* done = new QPushButton("Done", dialog);
-    layout->addWidget(label);
-    layout->addWidget(lines.back());
-    layout->addWidget(add);
-    layout->addWidget(def);
-    layout->addWidget(done);
-
-    connect(add, &QPushButton::clicked, dialog, [&]{ lines.push_back(new QLineEdit(dialog)); layout->insertWidget(lines.size() - 1, lines.back()); });
-    connect(done, &QPushButton::clicked, dialog, [&]{
-        QStringList cats;
-        for (auto l : lines)
-            if (!l->text().isEmpty())
-                cats << l->text();
-
-        if (cats.isEmpty()) {
-            label->setText("Unable to proceed without categories");
-            return;
-        }
-
-        for (auto c : cats) backend->categories()->add(c, true);
-
-        dialog->accept();
-    });
-    connect(def, &QPushButton::clicked, dialog, [&]{ backend->categories()->setupDefault(); dialog->accept(); });
-
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->setWindowFlag(Qt::WindowCloseButtonHint, false);
-    dialog->exec();
-    */
-
-    // backend->setupDefault();
     QMessageBox::information(this, "Welcome!",
-        "CoinWarden launched for the first time (since last database deletion)!");
+        "CoinWarden launched for the first time (since absence of database)!");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

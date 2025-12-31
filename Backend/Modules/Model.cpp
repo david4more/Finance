@@ -56,7 +56,7 @@ QVariant TransactionModel::data(const QModelIndex& index, int role) const
         case 0: return QString("%1%2%3")
             .arg(symbols[t.currency])
             .arg(t.amount < 0 ? "" : " ")
-            .arg(t.amount);
+            .arg(QString::number(t.amount, 'f', 2));
         case 1: return t.dateTime.toString("MMM dd, hh:mm");
         case 2: return t.categoryName;
         case 3: return t.accountName;
@@ -73,7 +73,7 @@ QVariant TransactionModel::data(const QModelIndex& index, int role) const
         case 5: return t.currency;
         }
     }
-
+    // else if (role == Qt::TextAlignmentRole && index.column() == 0) return QVariant(int(Qt::AlignRight | Qt::AlignVCenter));
 
     return {};
 }
@@ -102,10 +102,3 @@ void TransactionModel::setTransactions(QVector<Transaction>&& t)
     transactions = std::move(t);
     endResetModel();
 }
-
-
-
-
-
-
-

@@ -116,19 +116,3 @@ QVector<Category> CategoriesManager::get() const
 {
     return _categories;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

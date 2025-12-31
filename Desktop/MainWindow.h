@@ -49,12 +49,3 @@ private:
     void setupTransactionsPageAndForm();
     void setupSettingsPage();
 };
-
-
-
-
-
-
-
-
-
