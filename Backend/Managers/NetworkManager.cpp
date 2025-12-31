@@ -48,7 +48,7 @@ void NetworkManager::asyncNetworkRequest(const QNetworkRequest& request, std::fu
 
     QNetworkReply* reply = mgr->get(request);
 
-    QObject::connect(reply, &QNetworkReply::finished, [reply, callback]() {
+    QObject::connect(reply, &QNetworkReply::finished, [reply, callback]{
         if (reply->error() != QNetworkReply::NoError) { qDebug() << reply->errorString(); callback({}); return; }
 
         QByteArray data = reply->readAll();

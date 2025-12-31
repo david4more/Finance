@@ -8,6 +8,6 @@ class NetworkManager
     static QJsonObject parseJsonResponse(QByteArray data);
 
 public:
-    static QJsonObject blockingNetworkRequest(const QNetworkRequest& request, int timeoutMs = 5000);
-    static void asyncNetworkRequest(const QNetworkRequest& request, std::function<void(QJsonObject)> callback);
+    [[nodiscard]] QJsonObject blockingNetworkRequest(const QNetworkRequest& request, int timeoutMs = 5000);
+    void asyncNetworkRequest(const QNetworkRequest& request, std::function<void(QJsonObject)> callback);
 };

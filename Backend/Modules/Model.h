@@ -18,8 +18,8 @@ public:
     void setTransactions(QVector<Transaction>&& t);
     int rowCount(const QModelIndex&) const override { return transactions.size(); }
     int columnCount(const QModelIndex&) const override { return 6; }
-    QVariant data(const QModelIndex& index, int role) const override;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 };
 
 
@@ -39,7 +39,7 @@ public:
 
     void setFilters(Filters f);
     void resetFilters() { filters.reset(); invalidate(); }
-    Filters getFilters() const { if (filters) return *filters; else return {}; }
+    [[nodiscard]] Filters getFilters() const { if (filters) return *filters; else return {}; }
     Filters& mutableFilters() { if (!filters) filters.emplace(); return *filters; }
 
 private:

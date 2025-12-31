@@ -18,10 +18,10 @@ signals:
     void categoriesUpdated();
 
 public:
-    QMap<QString, double> getLimits() const;
+    [[nodiscard]] QMap<QString, double> getLimits() const;
     int findId(QString name, bool isExpense = true) const;
     explicit CategoriesManager(QSqlDatabase& db) : db(db) {}
-    QVector<Category> get() const;
-    QStringList getNames(TransactionType type = TransactionType::All) const;
+    [[nodiscard]] QVector<Category> get() const;
+    [[nodiscard]] QStringList getNames(TransactionType type = TransactionType::All) const;
     bool add(QString name, bool isExpense, int monthlyLimit = 200, QString color = defaultColor);
 };

@@ -27,6 +27,6 @@ class BACKEND_EXPORT AccountsManager
 public:
     int findId(QString name) const;
     explicit AccountsManager(QSqlDatabase& db) : db(db) {}
-    QStringList getNames() const { return names; }
+    [[nodiscard]] QStringList getNames() const { return names; }
     bool add(QString name);
 };

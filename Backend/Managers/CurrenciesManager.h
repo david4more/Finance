@@ -26,8 +26,8 @@ public:
     CurrenciesManager(QSqlDatabase& db) : db(db) {}
 
     bool requestLatest(QString currencies, QString base);
-    QMap<QString, double> rates() const;
-    QMap<QString, QChar> symbols() const;
+    [[nodiscard]] QMap<QString, double> rates() const;
+    [[nodiscard]] QMap<QString, QChar> symbols() const;
     QStringList codes() const;
     QString base() const;
     double value(QString key) const { return rates().value(key, 0.0); }
