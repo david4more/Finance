@@ -21,7 +21,7 @@ set(BACKEND_HEADERS
         Managers/NetworkManager.h
         Modules/Category.h
         Modules/Transaction.h
-        Modules/utils.h
+        Modules/Utils.h
         Modules/Currency.h
 )
 
