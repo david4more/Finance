@@ -6,8 +6,7 @@
 #include "Managers/AccountsManager.h"
 #include "Modules/Transaction.h"
 #include "Modules/Category.h"
-
-#include <QSqlQuery>
+#include "Modules/pch.h"
 #include <QtDebug>
 #include <QFile>
 

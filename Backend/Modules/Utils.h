@@ -1,11 +1,6 @@
 #pragma once
 
-
-#ifdef BACKEND_LIB
-#  define BACKEND_EXPORT __declspec(dllexport)
-#else
-#  define BACKEND_EXPORT __declspec(dllimport)
-#endif
+#include "Export.h"
 
 #include <QDate>
 

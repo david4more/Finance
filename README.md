@@ -30,6 +30,7 @@ More screenshots: [Issues → Screenshots](https://github.com/david4more/CoinWar
 - Finish currencies request implementation
 - Editing support for categories/accounts/transactions
 - Display categories' colors and accounts' icons
+- Rewrite business logic with STL
 
 ## Long-term vision
 - Remote database integration, accounts management

@@ -31,6 +31,10 @@ set(CMAKE_AUTORCC ON)
 
 add_library(Backend SHARED ${BACKEND_SOURCES} ${BACKEND_HEADERS})
 
+target_include_directories(Backend PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/include")
+include(GenerateExportHeader)
+generate_export_header(Backend EXPORT_FILE_NAME include/Export.h)
+
 target_precompile_headers(Backend PRIVATE Modules/pch.h)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Sql Network)
