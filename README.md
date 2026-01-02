@@ -51,11 +51,7 @@ PATH=(path to Qt)\ Qt \ 6.10.1 \ *Your CPP compiler* \ _64 \ bin;
 ### CMake options:
 `-D CMAKE_PREFIX_PATH="(path to Qt)/Qt/6.10.1/Your CPP compiler/lib/cmake`
 
-## QCustomPlot
-This project uses [QCustomPlot](https://www.qcustomplot.com/) for charts. 
-I included .dll and .lib files in the repo, because building QCustomPlot's .dll and .lib is a pain.
-You may need to regenerate QCustomPlot's .dll and .lib anyway: see 
-[QCustomPlot documentation](https://www.qcustomplot.com/index.php/tutorials/settingup)
-(section "Using QCustomPlot as shared library .so/.dll")
+## Other
+This project uses [QCustomPlot](https://www.qcustomplot.com/) for charts.
 
 Icons, used in the app, are from: www.flaticon.com/authors/pixel-perfect

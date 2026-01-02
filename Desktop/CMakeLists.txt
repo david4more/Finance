@@ -41,7 +41,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql Network)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql Network PrintSupport)
 
 set(DESKTOP_RESOURCES
         Files/files.qrc
@@ -60,14 +60,15 @@ target_link_libraries(Desktop PRIVATE
         Qt6::Widgets
         Qt6::Sql
         Qt6::Network
+        Qt6::PrintSupport
         Backend
 )
 
+target_sources(Desktop PRIVATE
+        QCustomPlot/qcustomplot.cpp
+)
 target_include_directories(Desktop PRIVATE
         ${CMAKE_SOURCE_DIR}/Backend
         ${CMAKE_SOURCE_DIR}/Backend/Modules
         ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot
-)
-target_link_libraries(Desktop PRIVATE
-        ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot/qcustomplotd2.lib
 )
