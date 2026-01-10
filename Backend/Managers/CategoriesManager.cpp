@@ -104,7 +104,7 @@ bool CategoriesManager::add(QString name, bool isExpense, int monthlyLimit, QStr
 
     query.bindValue(":name", name);
     query.bindValue(":isExpense", isExpense? 1 : 0);
-    query.bindValue(":monthlyLimit", monthlyLimit);
+    query.bindValue(":monthlyLimit", rand() % monthlyLimit);
     query.bindValue(":color", color);
 
     if (!query.exec()) { qDebug() << "Failed to execute CategoriesManager::add query"; return false; }

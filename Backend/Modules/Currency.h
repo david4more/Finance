@@ -1,5 +1,12 @@
 #pragma once
 
+const QString currenciesTable = R"(
+    CREATE TABLE currencies (
+    code TEXT PRIMARY KEY,
+    rate REAL NOT NULL,
+    symbol TEXT)
+)";
+
 class Currency
 {
 public:

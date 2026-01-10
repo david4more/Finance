@@ -3,13 +3,6 @@
 #include "../Modules/Currency.h"
 class QSqlDatabase;
 
-const QString currenciesTable = R"(
-    CREATE TABLE currencies (
-    code TEXT PRIMARY KEY,
-    rate REAL NOT NULL,
-    symbol TEXT)
-)";
-
 class BACKEND_EXPORT CurrenciesManager
 {
     friend class Backend;

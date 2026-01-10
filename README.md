@@ -13,7 +13,7 @@ transactions filtering, multi-currency support with automatic conversion and mor
 
 ## Screenshots
 ### Home page
-<img width="1282" height="832" alt="Image" src="https://github.com/user-attachments/assets/952bcc15-11d7-4112-b14d-ed834d9dc88d" />
+<img width="1282" height="832" alt="Image" src="https://github.com/user-attachments/assets/5170538e-720d-4f4c-bdb8-0be1cf202b07" />
 
 ### Configuring custom filters with a window-modal dialog
 <img width="1281" height="832" alt="Image" src="https://github.com/user-attachments/assets/7e72e537-9fe1-4131-9c64-92a4662c1d91" />

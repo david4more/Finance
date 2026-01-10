@@ -11,13 +11,14 @@ class BACKEND_EXPORT TransactionModel : public QAbstractTableModel
     QVector<Transaction> transactions;
     QMap<QString, double> currencies;
     QMap<QString, QChar> symbols;
+
 public:
     explicit TransactionModel(QObject* parent, QMap<QString, double> currencies, QMap<QString, QChar> symbols)
     : QAbstractTableModel(parent), currencies(currencies), symbols(symbols) {}
 
     void setTransactions(QVector<Transaction>&& t);
-    int rowCount(const QModelIndex&) const override { return transactions.size(); }
-    int columnCount(const QModelIndex&) const override { return 6; }
+    [[nodiscard]] int rowCount(const QModelIndex&) const override { return transactions.size(); }
+    [[nodiscard]] int columnCount(const QModelIndex&) const override { return 6; }
     [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
     [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 };
@@ -45,6 +46,6 @@ public:
 private:
     std::optional<Filters> filters;
 
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    [[nodiscard]] bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 };
 

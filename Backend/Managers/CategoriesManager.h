@@ -23,5 +23,5 @@ public:
     explicit CategoriesManager(QSqlDatabase& db) : db(db) {}
     [[nodiscard]] QVector<Category> get() const;
     [[nodiscard]] QStringList getNames(TransactionType type = TransactionType::All) const;
-    bool add(QString name, bool isExpense, int monthlyLimit = 200, QString color = defaultColor);
+    bool add(QString name, bool isExpense, int monthlyLimit = 1000, QString color = defaultColor);
 };
