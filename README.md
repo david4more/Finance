@@ -26,14 +26,15 @@ More screenshots: [Issues → Screenshots](https://github.com/david4more/CoinWar
 
 ## Roadmap
 
+- Polish client-server interaction and error handling
+- Migrate from raw SQL over HTTP to a proper REST API
 - Complete home page data displaying in base currency
-- Finish currencies request implementation
 - Editing support for categories/accounts/transactions
 - Display categories' colors and accounts' icons
 - Rewrite business logic with STL
 
 ## Long-term vision
-- Remote database integration, accounts management
+- Accounts management
 - Mobile version
 
 ## Build

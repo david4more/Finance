@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Modules/Utils.h"
-class QSqlDatabase;
 class Transaction;
 
 
@@ -9,11 +8,9 @@ class BACKEND_EXPORT TransactionsManager
 {
     friend class Backend;
 
-    QSqlDatabase& db;
     QString base = "EUR";
 
 public:
-    TransactionsManager(QSqlDatabase& db) : db(db) {}
 
     // convert into base currency
     [[nodiscard]] QVector<QPair<QString, double>> transactionsPerCategory(const QDate& from, const QDate& to, TransactionType type = TransactionType::All) const;

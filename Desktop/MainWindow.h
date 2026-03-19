@@ -40,6 +40,8 @@ private:
     TransactionModel* model;
     TransactionProxy* proxy;
 
+    void setupUi();
+
     void onAddCategory();
     void onAddAccount();
     void refresh();

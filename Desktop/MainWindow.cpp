@@ -24,16 +24,30 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    auto* loading = new QLabel("Connecting to server...");
+    loading->setAlignment(Qt::AlignCenter);
+    loading->setStyleSheet("font-size: 18px;");
+    loading->resize(300, 100);
+    loading->show();
 
-    // initialize backend and model+proxy
     backend = new Backend(this);
     connect(backend, &Backend::firstLaunch, this, &MainWindow::onFirstLaunch);
-    backend->initialize();
 
-    model = new TransactionModel(this, backend->currencies()->rates(), backend->currencies()->symbols());
-    proxy = new TransactionProxy(this);
-    proxy->setSourceModel(model);
+    backend->waitForServer([this, loading] {
+        loading->deleteLater();
+
+        model = new TransactionModel(this, backend->currencies()->rates(), backend->currencies()->symbols());
+        proxy = new TransactionProxy(this);
+        proxy->setSourceModel(model);
+
+        setupUi();
+        show();
+    });
+}
+
+void MainWindow::setupUi()
+{
+    ui->setupUi(this);
 
     // group MainWindow's buttons
     pages = new QButtonGroup(this);

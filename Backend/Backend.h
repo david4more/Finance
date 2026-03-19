@@ -2,7 +2,6 @@
 
 #include "Modules/Utils.h"
 #include <QObject>
-#include <QSqlDatabase>
 class TransactionsManager;
 class CurrenciesManager;
 class CategoriesManager;
@@ -16,24 +15,21 @@ signals:
     void firstLaunch();
 
 public:
-    Backend(QObject* parent = nullptr) : QObject(parent) {}   // initialize() call after connecting signals required
+    Backend(QObject* parent = nullptr);
     ~Backend();
-    void initialize();
 
     TransactionsManager* transactions() { return _transactions; }
     CurrenciesManager* currencies() { return _currencies; }
     AccountsManager* accounts() { return _accounts; }
     CategoriesManager* categories() { return _categories; }
 
-    bool setupDefault();
     bool generateTransactions();
     bool executeQuery(const QString& query);
 
-private:
-    bool createTables();
+    void waitForServer(std::function<void()> onReady);
 
-    bool initialized = false;
-    QSqlDatabase db;
+private:
+
     TransactionsManager* _transactions = nullptr;
     CurrenciesManager* _currencies = nullptr;
     AccountsManager* _accounts = nullptr;

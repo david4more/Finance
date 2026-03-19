@@ -1,14 +1,5 @@
 #pragma once
 
-const QString categoriesTable = R"(
-    CREATE TABLE categories (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    isExpense BOOLEAN NOT NULL,
-    monthlyLimit INTEGER,
-    color TEXT)
-)";
-
 class Category
 {
 public:

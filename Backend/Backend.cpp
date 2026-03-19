@@ -5,75 +5,22 @@
 #include "Managers/CategoriesManager.h"
 #include "Managers/AccountsManager.h"
 #include "Modules/Transaction.h"
-#include "Modules/Category.h"
 #include "Modules/pch.h"
 #include <QtDebug>
 #include <QFile>
+#include <QJsonObject>
+#include <QTimer>
 
-void Backend::initialize()
-{
-    if (initialized) return;
-    const QString name = "main", path = "finance.db";
+#include "Managers/NetworkManager.h"
 
-    if (QSqlDatabase::contains(name)) {
-        qDebug() << "not first call";
-        return;
-    }
-
-    bool isFirstLaunch = !QFile::exists(path);
-
-    db = QSqlDatabase::addDatabase("QSQLITE", name);
-    db.setDatabaseName(path);
-    if (!db.open()) qDebug() << "Failed to open DB";
-
-    _transactions = new TransactionsManager(db);
-    _currencies = new CurrenciesManager(db);
-    _accounts = new AccountsManager(db);
-    _categories = new CategoriesManager(db);
-
-    if (isFirstLaunch) {
-        createTables();
-        setupDefault();
-        emit firstLaunch();
-    }
-    else {
-        _categories->init();
-        _accounts->init();
-        _currencies->init();
-    }
-
-    initialized = true;
-}
-
-bool Backend::createTables()
-{
-    QSqlQuery query(db);
-    for (const auto& q : { categoriesTable, currenciesTable, accountsTable, transactionsTable })
-        if (!query.exec(q)) { qDebug() << "Failed to create table"; return false; }
-
-    return true;
-}
-
-bool Backend::setupDefault()
-{
-    if (_transactions == nullptr || _categories == nullptr || _currencies == nullptr || _accounts == nullptr) return false;
-
-    bool defSetup = (_categories->setupDefault() && _currencies->setupDefault() && _accounts->setupDefault());
-
-    _categories->init();
-    _accounts->init();
-    _currencies->init();
-
-    return defSetup && generateTransactions();
-}
+Backend::Backend(QObject* parent) : QObject(parent),
+    _transactions(new TransactionsManager), _currencies(new CurrenciesManager), _accounts(new AccountsManager), _categories(new CategoriesManager)
+{}
 
 bool Backend::generateTransactions()
 {
-    if (!db.transaction()) { qDebug() << "Failed to initialize a transaction"; return false; }
-
-    QSqlQuery query(db);
-    query.exec("DELETE FROM transactions");
-    query.clear();
+    NetworkManager::blockingSqlRequest("BEGIN TRANSACTION");
+    NetworkManager::blockingSqlRequest("DELETE FROM transactions");
 
     QVector<QString> currencies = _currencies->codes();
     QVector<QString> expenseCategories = _categories->getNames(TransactionType::Expense);
@@ -112,17 +59,37 @@ bool Backend::generateTransactions()
             category,
             _accounts->findId(account),
             account))))
-            return false;
+            { NetworkManager::blockingSqlRequest("ROLLBACK"); return false; }
     }
 
-    if (!db.commit()) { qDebug() << "Failed to commit transaction"; return false; }
+    NetworkManager::blockingSqlRequest("COMMIT");
     return true;
 }
 
 bool Backend::executeQuery(const QString& query)
 {
-    QSqlQuery q(db);
-    return q.exec(query);
+    NetworkManager::blockingSqlRequest(query);
+    return true;
+}
+
+void Backend::waitForServer(std::function<void()> onReady)
+{
+    auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, [this, timer, onReady]() {
+        if (NetworkManager::blockingSqlRequest("PING")[u"success"].toBool()) {
+            timer->stop();
+            timer->deleteLater();
+
+            _categories->init();
+            _accounts->init();
+            _currencies->init();
+
+            onReady();
+        } else {
+            qDebug() << "Server not available, retrying...";
+        }
+    });
+    timer->start(1000);
 }
 
 Backend::~Backend()

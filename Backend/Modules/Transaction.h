@@ -2,20 +2,6 @@
 
 #include <QDateTime>
 
-const QString transactionsTable = R"(
-    CREATE TABLE transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    amount REAL,
-    dateTime TEXT,
-    note TEXT,
-    currency TEXT,
-    category INTEGER,
-    account INTEGER,
-    FOREIGN KEY(currency) REFERENCES currencies(code),
-    FOREIGN KEY(category) REFERENCES categories(id),
-    FOREIGN KEY(account) REFERENCES accounts(id))
-)";
-
 class Transaction
 {
 public:
