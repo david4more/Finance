@@ -67,8 +67,10 @@ target_link_libraries(Desktop PRIVATE
 target_sources(Desktop PRIVATE
         QCustomPlot/qcustomplot.cpp
 )
+set_source_files_properties(QCustomPlot/qcustomplot.cpp PROPERTIES COMPILE_FLAGS "-g0")
 target_include_directories(Desktop PRIVATE
         ${CMAKE_SOURCE_DIR}/Backend
         ${CMAKE_SOURCE_DIR}/Backend/Modules
         ${CMAKE_SOURCE_DIR}/Desktop/QCustomPlot
+        ${CMAKE_SOURCE_DIR}/Desktop/Pages/Transactions
 )

@@ -37,19 +37,21 @@ More screenshots: [Issues → Screenshots](https://github.com/david4more/CoinWar
 - Mobile version
 
 ## Build
-To run the project, you need a [currencyapi](https://app.currencyapi.com) key. Environment variables:
-
-`CURRENCY_API_KEY=your_key`
-
+Project was written with Qt version 6.10.1.
 To launch the project outside Qt Creator, add the following to your configuration's 
 ### Environment variables:
 ```
-PATH=(path to Qt)\ Qt \ 6.10.1 \ *Your CPP compiler* \ _64 \ bin;
+PATH=(path to Qt)\ Qt \ your Qt version \ *Your CPP compiler* \ bin;
 (path to the repo)\ Desktop \ QCustomPlot;
-(path to the repo)\ *Your build directory* \ Backend
+(path to the repo)\ Your build directory \ Backend
 ```
 ### CMake options:
-`-D CMAKE_PREFIX_PATH="(path to Qt)/Qt/6.10.1/Your CPP compiler/lib/cmake`
+`-D CMAKE_PREFIX_PATH="(path to Qt) / Qt / your Qt version / Your CPP compiler / lib / cmake`
+
+### Real-time exchange rates
+
+To query real-time exchange rates, you need a [currencyapi](https://app.currencyapi.com) key. Environment variables:
+`CURRENCY_API_KEY=your_key`
 
 ## Other
 This project uses [QCustomPlot](https://www.qcustomplot.com/) for charts.

@@ -7,3 +7,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(Backend)
 add_subdirectory(Desktop)
+add_subdirectory(Server)

@@ -41,6 +41,7 @@ bool CurrenciesManager::requestLatest(QString currencies, QString base)
 
     QString lastUpdated = rootObj["meta"].toObject()["last_updated_at"].toString();
     _lastUpdate = QDateTime::fromString(lastUpdated, Qt::ISODate);
+    updated = true;
 
     QSqlQuery query(db);
 

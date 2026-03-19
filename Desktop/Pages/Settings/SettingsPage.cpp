@@ -22,9 +22,12 @@ SettingsPage::SettingsPage(QWidget* parent) :
 
 void SettingsPage::onGetCurrencies()
 {
-    if (ui->currencies->text().isEmpty() || ui->base->text().isEmpty()) { QMessageBox::information(this, "Error", "Fields are empty"); return; }
+    //if (ui->currencies->text().isEmpty() || ui->base->text().isEmpty()) { QMessageBox::information(this, "Error", "Fields are empty"); return; }
 
+    emit requestCurrenciesUpdated();
+    if (currenciesUpdated) { QMessageBox::information(this, "Failure", "Exchange rates were already up to date"); return; }
     emit requestCurrencies("EUR,GBP,CHF,PLN,UAH,USD,CAD,JPY,CNY", "EUR");
+    QMessageBox::information(this, "Success", "Exchange rates are updated");
 }
 
 void SettingsPage::onResetTransactions()

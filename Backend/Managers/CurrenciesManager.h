@@ -14,6 +14,7 @@ class BACKEND_EXPORT CurrenciesManager
     QSqlDatabase& db;
     QString _apiKey;
     QDateTime _lastUpdate;
+    bool updated = false;
 
 public:
     CurrenciesManager(QSqlDatabase& db) : db(db) {}
@@ -24,5 +25,6 @@ public:
     QStringList codes() const;
     QString base() const;
     double value(QString key) const { return rates().value(key, 0.0); }
+    bool currenciesUpdated() const { return updated; }
 };
 

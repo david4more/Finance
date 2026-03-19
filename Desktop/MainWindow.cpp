@@ -113,6 +113,9 @@ void MainWindow::setupSettingsPage()
             backend->executeQuery(query) ? "Query executed successfully" : "Query failed");
         refresh();
     });
+    connect(settingsPage, &SettingsPage::requestCurrenciesUpdated, this, [this] {
+        settingsPage->setCurrenciesUpdated(backend->currencies()->currenciesUpdated());
+    });
 }
 
 void MainWindow::onAddCategory()
